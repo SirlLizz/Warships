@@ -15,7 +15,7 @@ using Warships.Models;
 
 namespace Warships
 {
-    public partial class Layout : Form
+    public partial class ShipPlacing : Form
     {
         Game g;
         BattleField bf = new BattleField();
@@ -24,7 +24,7 @@ namespace Warships
         Pen blackPen = new Pen(Color.Black, 3);
         Image ship_1 = Image.FromFile("Resources/1.png");
 
-        public Layout(Game g)
+        public ShipPlacing(Game g)
         {
             this.g = g;
             InitializeComponent();
@@ -111,7 +111,7 @@ namespace Warships
             int Y = e.Location.Y;
             int dz = 10;
             shipSize = GetSizeOfShip();
-            if (X >= dz && X<= 500-dz && Y >= dz && Y <= 500 - dz && shipSize != -1)
+            if (X >= dz && X <= 500 - dz && Y >= dz && Y <= 500 - dz && shipSize != -1)
             {
                 X = X / 50;
                 Y = Y / 50;
@@ -120,7 +120,7 @@ namespace Warships
 
                 using (var graphics = Graphics.FromImage(ocean))
                 {
-                    Image icon = selectShipIcon(shipSize, rotated, IsPossibleToPlaceHere(bf, shipSize, rotated, X,Y));
+                    Image icon = selectShipIcon(shipSize, rotated, IsPossibleToPlaceHere(bf, shipSize, rotated, X, Y));
                     int xSize = 40;
                     int ySize = 40;
                     if (rotated)
@@ -132,7 +132,7 @@ namespace Warships
                 lastX = X;
                 lastY = Y;
             }
-            
+
             pictureBox1.Image = ocean;
 
         }
@@ -153,7 +153,7 @@ namespace Warships
             if (shipCount[0] == 0 && shipCount[1] == 0 && shipCount[2] == 0 && shipCount[3] == 0)
             {
                 int bt = 0;
-                g.FirstBF = bf;
+                g.FirstUser.BattleField = bf;
                 Battle btlWindow = new Battle(g);
                 btlWindow.Show();
                 this.Close();
@@ -169,7 +169,7 @@ namespace Warships
                 bf = (BattleField)formatter.Deserialize(stream);
                 stream.Close();
             }
-            shipCount = new int[4] { 0, 0,0,0 };
+            shipCount = new int[4] { 0, 0, 0, 0 };
 
             updateLayout();
         }

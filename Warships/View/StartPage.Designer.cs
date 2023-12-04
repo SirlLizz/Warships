@@ -28,186 +28,158 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
+            buttonStartBotGame = new Button();
             label1 = new Label();
-            textBox1 = new TextBox();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
-            textBox2 = new TextBox();
-            button5 = new Button();
-            radioButton1 = new RadioButton();
-            radioButton2 = new RadioButton();
-            radioButton3 = new RadioButton();
-            pictureBox1 = new PictureBox();
-            openFileDialog1 = new OpenFileDialog();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            textBoxUserName = new TextBox();
+            buttonStartLocalGame = new Button();
+            pictureAvatar = new PictureBox();
+            buttonDeveloperInfo = new Button();
+            buttonSystemInfo = new Button();
+            labelChangeAvatar = new Label();
+            buttonPreviousAvatar = new Button();
+            buttonNextAvatar = new Button();
+            ((System.ComponentModel.ISupportInitialize)pictureAvatar).BeginInit();
             SuspendLayout();
             // 
-            // button1
+            // buttonStartBotGame
             // 
-            button1.Location = new Point(63, 190);
-            button1.Name = "button1";
-            button1.Size = new Size(175, 60);
-            button1.TabIndex = 0;
-            button1.Text = "Игра против ИИ";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            buttonStartBotGame.Location = new Point(25, 184);
+            buttonStartBotGame.Margin = new Padding(3, 2, 3, 2);
+            buttonStartBotGame.Name = "buttonStartBotGame";
+            buttonStartBotGame.Size = new Size(154, 26);
+            buttonStartBotGame.TabIndex = 0;
+            buttonStartBotGame.Text = "Игра против ИИ";
+            buttonStartBotGame.UseVisualStyleBackColor = true;
+            buttonStartBotGame.Click += buttonStartBotGame_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(63, 67);
+            label1.Location = new Point(26, 25);
             label1.Name = "label1";
-            label1.Size = new Size(73, 20);
+            label1.Size = new Size(58, 15);
             label1.TabIndex = 1;
             label1.Text = "Никнейм";
             // 
-            // textBox1
+            // textBoxUserName
             // 
-            textBox1.Location = new Point(63, 90);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(175, 27);
-            textBox1.TabIndex = 2;
-            textBox1.Text = "Капитан Ямамото";
+            textBoxUserName.Location = new Point(26, 43);
+            textBoxUserName.Margin = new Padding(3, 2, 3, 2);
+            textBoxUserName.Name = "textBoxUserName";
+            textBoxUserName.Size = new Size(182, 23);
+            textBoxUserName.TabIndex = 2;
+            textBoxUserName.Text = "Капитан Ямамото";
             // 
-            // button2
+            // buttonStartLocalGame
             // 
-            button2.Location = new Point(58, 256);
-            button2.Name = "button2";
-            button2.Size = new Size(180, 29);
-            button2.TabIndex = 3;
-            button2.Text = "Создать сетевую игру";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            buttonStartLocalGame.Location = new Point(185, 186);
+            buttonStartLocalGame.Margin = new Padding(3, 2, 3, 2);
+            buttonStartLocalGame.Name = "buttonStartLocalGame";
+            buttonStartLocalGame.Size = new Size(143, 24);
+            buttonStartLocalGame.TabIndex = 3;
+            buttonStartLocalGame.Text = "Создать сетевую игру";
+            buttonStartLocalGame.UseVisualStyleBackColor = true;
+            buttonStartLocalGame.Click += buttonStartLocalGame_Click;
             // 
-            // button3
+            // pictureAvatar
             // 
-            button3.Location = new Point(44, 291);
-            button3.Name = "button3";
-            button3.Size = new Size(235, 29);
-            button3.TabIndex = 4;
-            button3.Text = "Подключиться к сетевой игре";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            pictureAvatar.Location = new Point(229, 43);
+            pictureAvatar.Margin = new Padding(3, 2, 3, 2);
+            pictureAvatar.Name = "pictureAvatar";
+            pictureAvatar.Size = new Size(100, 100);
+            pictureAvatar.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureAvatar.TabIndex = 11;
+            pictureAvatar.TabStop = false;
             // 
-            // button4
+            // buttonDeveloperInfo
             // 
-            button4.Location = new Point(28, 339);
-            button4.Name = "button4";
-            button4.Size = new Size(235, 29);
-            button4.TabIndex = 5;
-            button4.Text = "назад";
-            button4.UseVisualStyleBackColor = true;
-            button4.Visible = false;
-            button4.Click += button4_Click;
+            buttonDeveloperInfo.Location = new Point(26, 82);
+            buttonDeveloperInfo.Name = "buttonDeveloperInfo";
+            buttonDeveloperInfo.Size = new Size(182, 23);
+            buttonDeveloperInfo.TabIndex = 12;
+            buttonDeveloperInfo.Text = "Сведения о разработчиках";
+            buttonDeveloperInfo.UseVisualStyleBackColor = true;
+            buttonDeveloperInfo.Click += buttonDeveloperInfo_Click;
             // 
-            // textBox2
+            // buttonSystemInfo
             // 
-            textBox2.Location = new Point(63, 123);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(175, 27);
-            textBox2.TabIndex = 6;
-            textBox2.Text = "Капитан Ямамото";
-            textBox2.Visible = false;
+            buttonSystemInfo.Location = new Point(26, 120);
+            buttonSystemInfo.Name = "buttonSystemInfo";
+            buttonSystemInfo.Size = new Size(182, 23);
+            buttonSystemInfo.TabIndex = 13;
+            buttonSystemInfo.Text = "Сведения о системе";
+            buttonSystemInfo.UseVisualStyleBackColor = true;
+            buttonSystemInfo.Click += buttonSystemInfo_Click;
             // 
-            // button5
+            // labelChangeAvatar
             // 
-            button5.Location = new Point(63, 155);
-            button5.Name = "button5";
-            button5.Size = new Size(152, 29);
-            button5.TabIndex = 7;
-            button5.Text = "Подключиться!";
-            button5.UseVisualStyleBackColor = true;
-            button5.Visible = false;
-            button5.Click += button5_Click;
+            labelChangeAvatar.AutoSize = true;
+            labelChangeAvatar.Location = new Point(231, 25);
+            labelChangeAvatar.Name = "labelChangeAvatar";
+            labelChangeAvatar.Size = new Size(89, 15);
+            labelChangeAvatar.TabIndex = 14;
+            labelChangeAvatar.Text = "Выбор аватара";
             // 
-            // radioButton1
+            // buttonPreviousAvatar
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Checked = true;
-            radioButton1.Location = new Point(257, 175);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(79, 24);
-            radioButton1.TabIndex = 8;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "Легкий";
-            radioButton1.UseVisualStyleBackColor = true;
+            buttonPreviousAvatar.Location = new Point(229, 148);
+            buttonPreviousAvatar.Name = "buttonPreviousAvatar";
+            buttonPreviousAvatar.Size = new Size(47, 23);
+            buttonPreviousAvatar.TabIndex = 15;
+            buttonPreviousAvatar.Text = "<--";
+            buttonPreviousAvatar.UseVisualStyleBackColor = true;
+            buttonPreviousAvatar.Click += buttonPreviousAvatar_Click;
             // 
-            // radioButton2
+            // buttonNextAvatar
             // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(257, 205);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(91, 24);
-            radioButton2.TabIndex = 9;
-            radioButton2.Text = "Средний";
-            radioButton2.UseVisualStyleBackColor = true;
+            buttonNextAvatar.Location = new Point(282, 148);
+            buttonNextAvatar.Name = "buttonNextAvatar";
+            buttonNextAvatar.Size = new Size(47, 23);
+            buttonNextAvatar.TabIndex = 16;
+            buttonNextAvatar.Text = "-->";
+            buttonNextAvatar.UseVisualStyleBackColor = true;
+            buttonNextAvatar.Click += buttonNextAvatar_Click;
             // 
-            // radioButton3
+            // StartPage
             // 
-            radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(257, 235);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(96, 24);
-            radioButton3.TabIndex = 10;
-            radioButton3.Text = "Сложный";
-            radioButton3.TextAlign = ContentAlignment.MiddleCenter;
-            radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Location = new Point(257, 46);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(125, 104);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 11;
-            pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
-            // 
-            // openFileDialog1
-            // 
-            openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // Form1
-            // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(484, 490);
-            Controls.Add(pictureBox1);
-            Controls.Add(radioButton3);
-            Controls.Add(radioButton2);
-            Controls.Add(radioButton1);
-            Controls.Add(button5);
-            Controls.Add(textBox2);
-            Controls.Add(button4);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(textBox1);
+            ClientSize = new Size(340, 221);
+            Controls.Add(buttonNextAvatar);
+            Controls.Add(buttonPreviousAvatar);
+            Controls.Add(labelChangeAvatar);
+            Controls.Add(buttonSystemInfo);
+            Controls.Add(buttonDeveloperInfo);
+            Controls.Add(pictureAvatar);
+            Controls.Add(buttonStartLocalGame);
+            Controls.Add(textBoxUserName);
             Controls.Add(label1);
-            Controls.Add(button1);
-            Name = "Form1";
-            Text = "Form1";
-            Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            Controls.Add(buttonStartBotGame);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(3, 2, 3, 2);
+            Name = "StartPage";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Главное меню";
+            ((System.ComponentModel.ISupportInitialize)pictureAvatar).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button button1;
+        private Button buttonStartBotGame;
         private Label label1;
-        private TextBox textBox1;
-        private Button button2;
+        private TextBox textBoxUserName;
+        private Button buttonStartLocalGame;
         private Button button3;
         private Button button4;
         private TextBox textBox2;
         private Button button5;
-        private RadioButton radioButton1;
-        private RadioButton radioButton2;
-        private RadioButton radioButton3;
-        private PictureBox pictureBox1;
-        private OpenFileDialog openFileDialog1;
+        private PictureBox pictureAvatar;
+        private Button buttonDeveloperInfo;
+        private Button buttonSystemInfo;
+        private Label labelChangeAvatar;
+        private Button buttonPreviousAvatar;
+        private Button buttonNextAvatar;
     }
 }

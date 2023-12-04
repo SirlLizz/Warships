@@ -1,13 +1,12 @@
-﻿namespace Warships.Models
+﻿using Warships.Enum;
+
+namespace Warships.Models
 {
     [Serializable]
     public class Game
     {
-        public string FirstName { get; set; } = string.Empty;
-        public string SecondName { get; set; } = string.Empty;
-        public Image FirstAve { get; set; } = Image.FromFile("Resources/1.png");
-        public Image SecondAve { get; set; } = Image.FromFile("Resources/1.png");
-        public BattleField FirstBF { get; set; } = new();
-        public BattleField SecondBF { get; set; } = new();
+        public GameUser FirstUser { get; set; } = new();
+        public GameUser SecondUser { get; set; } = new();
+        public BattleType BattleType { get; set; } = BattleType.vsEasyBot;
     }
 }

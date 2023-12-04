@@ -1,132 +1,145 @@
 ﻿namespace Warships
 {
-    using System.Net;
-    using System.Net.Sockets;
     using System.Windows.Forms;
     using Warships.Models;
+    using Warships.View;
 
     public partial class StartPage : Form
     {
-        String playerName;
-        Image icon = Image.FromFile("Resources/avs/1.png");
-        Game g = new Game();
+        private readonly GameUser user = new();
+        private readonly LinkedList<Image> collectionImage = new();
+        private LinkedListNode<Image> node;
+
         public StartPage()
         {
             InitializeComponent();
-            pictureBox1.Image = icon;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            g.FirstAve = pictureBox1.Image;
-            g.FirstName = textBox1.Text;
-            Layout placement = new Layout(g);
-            placement.Show();
-            // this.Close();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            IPHostEntry ipHost = Dns.GetHostEntry("localhost");
-            IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, 11000);
-
-            Socket sListener = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            label1.Text = "Ваш IP: " + ipHost.AddressList[1] + "/" + ipEndPoint.Port;
-            button1.Hide();
-            button2.Hide();
-            button3.Hide();
-            textBox1.Hide();
-            textBox2.Hide();
-            playerName = textBox1.Text;
-
-            radioButton1.Visible = false;
-            radioButton2.Visible = false;
-            radioButton3.Visible = false;
-            button4.Show();
-            try
+            string[] filePaths = Directory.GetFiles("Resources/avatars", "*.png");
+            foreach (var file in filePaths)
             {
-                sListener.Bind(ipEndPoint);
-                sListener.Listen(1);
-                label1.Text = "fnjafbalkfa";
-                //Console.WriteLine("Ожидаем соединение через порт {0}", ipEndPoint);
-
-                // Программа приостанавливается, ожидая входящее соединение
-                //Socket handler = sListener.Accept();
-                string data = null;
+                collectionImage.AddFirst(Image.FromFile(file));
             }
-            catch (Exception ex) { }
 
+            var findObject = collectionImage.Find(collectionImage.First());
 
-
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            label1.Text = "Никнейм";
-
-            button1.Show();
-            button2.Show();
-            button3.Show();
-            textBox1.Show();
-            textBox2.Hide();
-            button4.Hide();
-            button5.Hide();
-            textBox1.Text = playerName;
-            radioButton1.Visible = true;
-            radioButton2.Visible = true;
-            radioButton3.Visible = true;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            button1.Hide();
-            button2.Hide();
-            button3.Hide();
-            button4.Show();
-            button5.Show();
-            textBox2.Show();
-            playerName = textBox1.Text;
-            textBox1.Text = "127.0.0.1";
-            textBox2.Text = "11000";
-
-            radioButton1.Visible = false;
-            radioButton2.Visible = false;
-            radioButton3.Visible = false;
-        }
-
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            IPHostEntry host = Dns.GetHostEntry(textBox1.Text);
-            IPAddress ipAddress = host.AddressList[0];
-
-            int ip = int.Parse(textBox2.Text);
-            IPEndPoint remoteEP = new IPEndPoint(ipAddress, ip);
-
-            // Create a TCP/IP  socket.
-            Socket client = new Socket(ipAddress.AddressFamily,
-                SocketType.Stream, ProtocolType.Tcp);
-
-            // Connect the socket to the remote endpoint. Catch any errors.
-            try
+            if (findObject != null)
             {
-                // Connect to Remote EndPoint
-                client.Connect(remoteEP);
-                label1.Text = "qwerty";
-                //Console.WriteLine("Socket connected to {0}", client.RemoteEndPoint.ToString());
+                node = findObject;
             }
-            catch { };
+            else
+            {
+                throw new Exception();
+            }
+
+            pictureAvatar.Image = collectionImage.First();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        public StartPage(GameUser user)
         {
+            InitializeComponent();
+            textBoxUserName.Text = user.Name;
+
+            string[] filePaths = Directory.GetFiles("Resources/avatars", "*.png");
+            foreach (var file in filePaths)
+            {
+                collectionImage.AddFirst(Image.FromFile(file));
+            }
+            var findObject = collectionImage.Find(user.Ave);
+
+            if (findObject != null)
+            {
+                node = findObject;
+                pictureAvatar.Image = user.Ave;
+            }
+            else
+            {
+                findObject = collectionImage.Find(collectionImage.First());
+
+                if (findObject != null)
+                {
+                    node = findObject;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+                if(user.Ave != null)
+                {
+                    pictureAvatar.Image = user.Ave;
+                }
+                else
+                {
+                    pictureAvatar.Image = collectionImage.First();
+                }
+
+            }
 
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void buttonStartBotGame_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK) { icon = Image.FromFile(openFileDialog1.FileName); }
+            user.Ave = node.Value;
+            user.Name = textBoxUserName.Text;
+            SelectBotLevelPage selectBotLevelPage = new(user);
+            selectBotLevelPage.Show();
+            this.Hide();
+        }
+
+        private void buttonStartLocalGame_Click(object sender, EventArgs e)
+        {
+            /*            IPHostEntry ipHost = Dns.GetHostEntry("localhost");
+                        IPAddress ipAddr = ipHost.AddressList[0];
+                        IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, 11000);
+
+                        Socket sListener = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                        label1.Text = "Ваш IP: " + ipHost.AddressList[1] + "/" + ipEndPoint.Port;
+                        buttonStartBotGame.Hide();
+                        buttonStartLocalGame.Hide();
+                        button3.Hide();
+                        textBoxUserName.Hide();
+                        textBox2.Hide();
+                        playerName = textBoxUserName.Text;
+
+                        button4.Show();
+                        try
+                        {
+                            sListener.Bind(ipEndPoint);
+                            sListener.Listen(1);
+                            label1.Text = "fnjafbalkfa";
+                            //Console.WriteLine("Ожидаем соединение через порт {0}", ipEndPoint);
+
+                            // Программа приостанавливается, ожидая входящее соединение
+                            //Socket handler = sListener.Accept();
+                            string data = null;
+                        }
+                        catch (Exception ex) { }*/
+        }
+
+        private void buttonDeveloperInfo_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Приложение разработал я", "Сведения о разработчиках");
+        }
+
+        private void buttonSystemInfo_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Версия приложения: 0.0.0.1", "Сведения о системе");
+        }
+
+        private void buttonPreviousAvatar_Click(object sender, EventArgs e)
+        {
+            if (node.Previous != null)
+            {
+                node = node.Previous;
+                pictureAvatar.Image = node.Value;
+            }
+        }
+
+        private void buttonNextAvatar_Click(object sender, EventArgs e)
+        {
+            if (node.Next != null)
+            {
+                node = node.Next;
+                pictureAvatar.Image = node.Value;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Warships
 {
-    partial class Layout
+    partial class ShipPlacing
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Layout));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShipPlacing));
             LoadButton = new Button();
             pictureBox1 = new PictureBox();
             button1 = new Button();

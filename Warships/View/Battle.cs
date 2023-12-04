@@ -1,14 +1,4 @@
-﻿using Microsoft.VisualBasic.Devices;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Warships.Models;
+﻿using Warships.Models;
 using static Warships.Models.Miscleanous;
 
 namespace Warships
@@ -28,12 +18,12 @@ namespace Warships
         {
             InitializeComponent();
             bot = new Bot();
-            label1.Text = g.FirstName;
-            pictureBox3.Image = g.FirstAve;
-            bf = g.FirstBF;
+            label1.Text = g.FirstUser.Name;
+            pictureBox3.Image = g.FirstUser.Ave;
+            bf = g.FirstUser.BattleField;
 
-            label2.Text = g.SecondName;
-            pictureBox4.Image = g.SecondAve;
+            label2.Text = g.SecondUser.Name;
+            pictureBox4.Image = g.SecondUser.Ave;
 
 
             //battleType = role;
