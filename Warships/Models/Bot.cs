@@ -9,7 +9,7 @@ namespace Warships.Models
     public class Bot
     {
         public string nickname = "AI";
-        public Image icon = Image.FromFile("avs/0.png");
+        public Image icon = Image.FromFile("Resources/avs/0.png");
         readonly BattleField bf = new();
 
         public Bot()

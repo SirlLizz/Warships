@@ -55,7 +55,7 @@
         public static void FillLines(Bitmap bmp, int x, int y)
         {
             x *= 50;
-            y = y * 50;
+            y *= 50;
             using (var graphics = Graphics.FromImage(bmp))
             {
                 Pen blackPen = new Pen(Color.Red, 1);
@@ -87,50 +87,18 @@
             Random r = new Random();
             int x, y;
             bool rotated;
-
-            int shipSize = 4;
-            for (int i = 0; i < 1; i++)
+            for(var shipSize = 4; shipSize !=0; shipSize--)
             {
-                do
+                for (int i = 0; i < 5 - shipSize; i++)
                 {
-                    x = r.Next(10);
-                    y = r.Next(10);
-                    rotated = r.Next() % 2 == 0;
-                } while (!IsPossibleToPlaceHere(bf, shipSize, rotated, x, y));
-                PlaceShip(bf, shipSize, rotated, x, y);
-            }
-            shipSize = 3;
-            for (int i = 0; i < 2; i++)
-            {
-                do
-                {
-                    x = r.Next(10);
-                    y = r.Next(10);
-                    rotated = r.Next() % 2 == 0;
-                } while (!IsPossibleToPlaceHere(bf, shipSize, rotated, x, y));
-                PlaceShip(bf, shipSize, rotated, x, y);
-            }
-            shipSize = 2;
-            for (int i = 0; i < 3; i++)
-            {
-                do
-                {
-                    x = r.Next(10);
-                    y = r.Next(10);
-                    rotated = r.Next() % 2 == 0;
-                } while (!IsPossibleToPlaceHere(bf, shipSize, rotated, x, y));
-                PlaceShip(bf, shipSize, rotated, x, y);
-            }
-            shipSize = 1;
-            for (int i = 0; i < 4; i++)
-            {
-                do
-                {
-                    x = r.Next(10);
-                    y = r.Next(10);
-                    rotated = r.Next() % 2 == 0;
-                } while (!IsPossibleToPlaceHere(bf, shipSize, rotated, x, y));
-                PlaceShip(bf, shipSize, rotated, x, y);
+                    do
+                    {
+                        x = r.Next(10);
+                        y = r.Next(10);
+                        rotated = r.Next() % 2 == 0;
+                    } while (!IsPossibleToPlaceHere(bf, shipSize, rotated, x, y));
+                    PlaceShip(bf, shipSize, rotated, x, y);
+                }
             }
         }
     }

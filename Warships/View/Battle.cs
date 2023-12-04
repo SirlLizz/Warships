@@ -28,13 +28,13 @@ namespace Warships
 
             //battleType = role;
         }
-        Image ship_1 = Image.FromFile("1.png");
-        Bitmap myField = new Bitmap("water-4.jpg");
-        Bitmap enemyField = new Bitmap("water-4.jpg");
-        Image redKrest = Image.FromFile("red_krest.png");
-        Image aim = Image.FromFile("aim.png");
-        Image exp = Image.FromFile("exp.png");
-        Image mis = Image.FromFile("black_krest.png");
+        Image ship_1 = Image.FromFile("Resources/1.png");
+        Bitmap myField = new Bitmap("Resources/water-4.jpg");
+        Bitmap enemyField = new Bitmap("Resources/water-4.jpg");
+        Image redKrest = Image.FromFile("Resources/red_krest.png");
+        Image aim = Image.FromFile("Resources/aim.png");
+        Image exp = Image.FromFile("Resources/exp.png");
+        Image mis = Image.FromFile("Resources/black_krest.png");
         private void Battle_Load(object sender, EventArgs e)
         {
 

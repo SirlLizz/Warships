@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using static Warships.Models.Miscleanous;
-using System.Security.Policy;
 using Warships.Models;
 
 namespace Warships
@@ -27,7 +17,9 @@ namespace Warships
         public ShipPlacing(Game g)
         {
             this.g = g;
+
             InitializeComponent();
+            updateLayout();
         }
 
 
@@ -42,15 +34,16 @@ namespace Warships
         {
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
-                    if (bf.forbiddenToPlace[i, j] == true && bf.shipPlacement[i, j] == false) Miscleanous.FillLines(RawOcean, i, j);
+                    if (bf.forbiddenToPlace[i, j] == true && bf.shipPlacement[i, j] == false) 
+                        Miscleanous.FillLines(RawOcean, i, j);
 
 
-            select_1_ship.Text = ": " + shipCount[0];
-            select_2_ship.Text = ": " + shipCount[1];
-            select_3_ship.Text = ": " + shipCount[2];
-            select_4_ship.Text = ": " + shipCount[3];
+            select_1_ship.Text = "однопалубных: " + shipCount[0];
+            select_2_ship.Text = "двухпалубных: " + shipCount[1];
+            select_3_ship.Text = "трехпалубных: " + shipCount[2];
+            select_4_ship.Text = "четырехпалубных: " + shipCount[3];
 
-            pictureBox1.Image = RawOcean;
+            pictureBoxShipPlace.Image = RawOcean;
 
         }
         public void resetLayout()
@@ -104,7 +97,7 @@ namespace Warships
             else if (shipCount[2] != 0) select_3_ship.Checked = true;
             else if (shipCount[3] != 0) select_4_ship.Checked = true;
         }
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)  //анимация
+        private void pictureBoxShipPlace_MouseMove(object sender, MouseEventArgs e)  //анимация
         {
             Bitmap ocean = new Bitmap(RawOcean);
             int X = e.Location.X;
@@ -133,7 +126,7 @@ namespace Warships
                 lastY = Y;
             }
 
-            pictureBox1.Image = ocean;
+            pictureBoxShipPlace.Image = ocean;
 
         }
         private int GetSizeOfShip()
@@ -148,7 +141,7 @@ namespace Warships
         {
             rotated = !rotated;
         }
-        private void button9_Click(object sender, EventArgs e)
+        private void buttonStart_Click(object sender, EventArgs e)
         {
             if (shipCount[0] == 0 && shipCount[1] == 0 && shipCount[2] == 0 && shipCount[3] == 0)
             {
@@ -159,7 +152,7 @@ namespace Warships
                 this.Close();
             }
         }
-        private void LoadButton_Click(object sender, EventArgs e)
+        private void buttonLoadPattern_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == DialogResult.OK)
@@ -174,7 +167,7 @@ namespace Warships
             updateLayout();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonSavePattern_Click(object sender, EventArgs e)
         {
             if (shipCount[0] == 0 && shipCount[1] == 0 && shipCount[2] == 0 && shipCount[3] == 0)
             {
@@ -190,9 +183,18 @@ namespace Warships
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void buttonClearField_Click(object sender, EventArgs e)
         {
             resetLayout();
+            updateLayout();
+        }
+
+        private void buttonRandomRandomly_Click(object sender, EventArgs e)
+        {
+            resetLayout();
+            FillRandomly(bf);
+            shipCount = new int[4] { 0, 0, 0, 0 };
+
             updateLayout();
         }
     }
