@@ -1,6 +1,6 @@
 ﻿namespace Warships
 {
-    partial class Form1
+    partial class StartPage
     {
         /// <summary>
         ///  Required designer variable.

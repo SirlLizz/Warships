@@ -8,7 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Warships.Miscleanous;
+using Warships.Models;
+using static Warships.Models.Miscleanous;
 
 namespace Warships
 {

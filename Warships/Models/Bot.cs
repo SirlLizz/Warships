@@ -4,16 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Warships
+namespace Warships.Models
 {
     public class Bot
     {
         public string nickname = "AI";
         public Image icon = Image.FromFile("avs/0.png");
-        BattleField bf = new BattleField();
-        public Bot() {
+        readonly BattleField bf = new();
+
+        public Bot()
+        {
             Miscleanous.FillRandomly(bf);
         }
+
         public bool ShotToBot(Point p)
         {
             if (bf.shipPlacement[p.X, p.Y])
@@ -26,7 +29,7 @@ namespace Warships
         }
         public Point ShotByBot()
         {
-            
+
             Random r = new Random();
             int x, y;
             do
@@ -35,12 +38,12 @@ namespace Warships
                 y = r.Next(10);
             } while (bf.shooted[x, y] == true);
             bf.shooted[x, y] = true;
-            Point point = new Point(x,y);
+            Point point = new Point(x, y);
             return point;
         }
         public bool IsDestroyedWhole(int pX, int pY)
         {
-            int X = pX; 
+            int X = pX;
             int Y = pY;
             while (X > 0 && bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == true) X--;
             if (bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == false) return false;
@@ -66,6 +69,6 @@ namespace Warships
         {
             return Miscleanous.AllIsDestroyed(bf);
         }
-        
+
     }
 }

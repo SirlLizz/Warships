@@ -3,13 +3,14 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Windows.Forms;
+    using Warships.Models;
 
-    public partial class Form1 : Form
+    public partial class StartPage : Form
     {
         String playerName;
-        Image icon = Image.FromFile("avs/1.png");
+        Image icon = Image.FromFile("Resources/avs/1.png");
         Game g = new Game();
-        public Form1()
+        public StartPage()
         {
             InitializeComponent();
             pictureBox1.Image = icon;
@@ -21,7 +22,7 @@
             g.FirstName = textBox1.Text;
             Layout placement = new Layout(g);
             placement.Show();
-           // this.Close();
+            // this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)

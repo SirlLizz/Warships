@@ -9,8 +9,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Warships.Miscleanous;
+using static Warships.Models.Miscleanous;
 using System.Security.Policy;
+using Warships.Models;
 
 namespace Warships
 {
@@ -19,9 +20,9 @@ namespace Warships
         Game g;
         BattleField bf = new BattleField();
 
-        Bitmap RawOcean = new Bitmap("water-4.jpg");
+        Bitmap RawOcean = new Bitmap("Resources/water-4.jpg");
         Pen blackPen = new Pen(Color.Black, 3);
-        Image ship_1 = Image.FromFile("1.png");
+        Image ship_1 = Image.FromFile("Resources/1.png");
 
         public Layout(Game g)
         {
@@ -56,7 +57,7 @@ namespace Warships
         {
             bf.forbiddenToPlace = new bool[10, 10];
             bf.shipPlacement = new bool[10, 10];
-            RawOcean = new Bitmap("water-4.jpg");
+            RawOcean = new Bitmap("Resources/water-4.jpg");
 
             shipCount = new int[4] { 4, 3, 2, 1 };
             select_1_ship.Enabled = true;
