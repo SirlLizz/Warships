@@ -13,8 +13,6 @@ namespace Warships
         BattleField bf = new BattleField();
 
         Bitmap RawOcean = new Bitmap("Resources/water-4.jpg");
-        Pen blackPen = new Pen(Color.Black, 3);
-        Image ship_1 = Image.FromFile("Resources/1.png");
 
         public ShipPlacing(Game g)
         {
@@ -199,17 +197,28 @@ namespace Warships
             updateBoat(bf, RawOcean);
         }
 
+        private void buttonRandomBeach_Click(object sender, EventArgs e)
+        {
+            resetLayout();
+            FillRandomBeach(bf);
+            shipCount = new int[4] { 0, 0, 0, 0 };
+
+            updateLayout();
+            updateBoat(bf, RawOcean);
+        }
+
         private void ShipPlacing_KeyPress(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode.ToString() == "R" || e.KeyCode.ToString() == "r" || e.KeyCode.ToString() == "К" || e.KeyCode.ToString() == "к")
+            if (e.KeyCode.ToString() == "R" || e.KeyCode.ToString() == "r" || e.KeyCode.ToString() == "К" || e.KeyCode.ToString() == "к")
             {
                 rotated = !rotated;
             }
-            if(e.KeyCode.ToString() == "F1")
+            if (e.KeyCode.ToString() == "F1")
             {
                 MessageBox.Show("Расстановка кораблей осуществляется мышкой или случайно, повернуть можно при нажатии кнопки R", "Справка");
             }
             updateLayout();
         }
+
     }
 }

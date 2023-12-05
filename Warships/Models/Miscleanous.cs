@@ -104,6 +104,56 @@ namespace Warships.Models
             }
         }
 
+        public static void FillRandomBeach(BattleField bf)
+        {
+            Random r = new Random();
+            int xPosition = 0, yPosition = 0;
+            bool rotated = true;
+            for (var shipSize = 4; shipSize != 1; shipSize--)
+            {
+                for (int i = 0; i < 5 - shipSize; i++)
+                {
+                    do
+                    {
+                        switch (r.Next(4))
+                        {
+                            case 0:
+                                yPosition = r.Next(10);
+                                xPosition = 0;
+                                rotated = true;
+                                break;
+                            case 1:
+                                xPosition = 9;
+                                yPosition = r.Next(10);
+                                rotated = true;
+                                break;
+                            case 2:
+                                yPosition = 0;
+                                xPosition = r.Next(10);
+                                rotated = false;
+                                break;
+                            case 3:
+                                yPosition = 9;
+                                xPosition = r.Next(10);
+                                rotated = false;
+                                break;
+                        }
+                    } while (!IsPossibleToPlaceHere(bf, shipSize, rotated, xPosition, yPosition));
+                    PlaceShip(bf, shipSize, rotated, xPosition, yPosition);
+                }
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                do
+                {
+                    xPosition = r.Next(10);
+                    yPosition = r.Next(10);
+                    rotated = r.Next() % 2 == 0;
+                } while (!IsPossibleToPlaceHere(bf, 1, rotated, xPosition, yPosition));
+                PlaceShip(bf, 1, rotated, xPosition, yPosition);
+            }
+        }
+
         public static void drawBoat(BattleField bf, int shipSize, Bitmap image, int x, int y, bool rotated)
         {
             using (var graphics = Graphics.FromImage(image))

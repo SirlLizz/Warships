@@ -215,6 +215,7 @@
             buttonRandomBeach.TabIndex = 0;
             buttonRandomBeach.Text = "Берега";
             buttonRandomBeach.UseVisualStyleBackColor = true;
+            buttonRandomBeach.Click += buttonRandomBeach_Click;
             // 
             // ShipPlacing
             // 
@@ -234,7 +235,7 @@
             Name = "ShipPlacing";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Расстановка кораблей";
-            KeyDown += new KeyEventHandler(ShipPlacing_KeyPress);
+            KeyDown += ShipPlacing_KeyPress;
             ((System.ComponentModel.ISupportInitialize)pictureBoxShipPlace).EndInit();
             groupBoxManualPlasing.ResumeLayout(false);
             groupBoxManualPlasing.PerformLayout();

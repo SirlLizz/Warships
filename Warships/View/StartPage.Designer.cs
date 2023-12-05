@@ -38,24 +38,25 @@
             labelChangeAvatar = new Label();
             buttonPreviousAvatar = new Button();
             buttonNextAvatar = new Button();
+            buttonLoadBotGame = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureAvatar).BeginInit();
             SuspendLayout();
             // 
             // buttonStartBotGame
             // 
-            buttonStartBotGame.Location = new Point(25, 184);
+            buttonStartBotGame.Location = new Point(116, 170);
             buttonStartBotGame.Margin = new Padding(3, 2, 3, 2);
             buttonStartBotGame.Name = "buttonStartBotGame";
-            buttonStartBotGame.Size = new Size(154, 26);
+            buttonStartBotGame.Size = new Size(85, 46);
             buttonStartBotGame.TabIndex = 0;
-            buttonStartBotGame.Text = "Игра против ИИ";
+            buttonStartBotGame.Text = "Создать игру с ИИ";
             buttonStartBotGame.UseVisualStyleBackColor = true;
             buttonStartBotGame.Click += buttonStartBotGame_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(26, 25);
+            label1.Location = new Point(12, 9);
             label1.Name = "label1";
             label1.Size = new Size(58, 15);
             label1.TabIndex = 1;
@@ -63,7 +64,7 @@
             // 
             // textBoxUserName
             // 
-            textBoxUserName.Location = new Point(26, 43);
+            textBoxUserName.Location = new Point(12, 27);
             textBoxUserName.Margin = new Padding(3, 2, 3, 2);
             textBoxUserName.Name = "textBoxUserName";
             textBoxUserName.Size = new Size(182, 23);
@@ -72,10 +73,10 @@
             // 
             // buttonStartLocalGame
             // 
-            buttonStartLocalGame.Location = new Point(185, 186);
+            buttonStartLocalGame.Location = new Point(215, 170);
             buttonStartLocalGame.Margin = new Padding(3, 2, 3, 2);
             buttonStartLocalGame.Name = "buttonStartLocalGame";
-            buttonStartLocalGame.Size = new Size(143, 24);
+            buttonStartLocalGame.Size = new Size(99, 46);
             buttonStartLocalGame.TabIndex = 3;
             buttonStartLocalGame.Text = "Создать сетевую игру";
             buttonStartLocalGame.UseVisualStyleBackColor = true;
@@ -83,7 +84,7 @@
             // 
             // pictureAvatar
             // 
-            pictureAvatar.Location = new Point(229, 43);
+            pictureAvatar.Location = new Point(215, 27);
             pictureAvatar.Margin = new Padding(3, 2, 3, 2);
             pictureAvatar.Name = "pictureAvatar";
             pictureAvatar.Size = new Size(100, 100);
@@ -94,7 +95,7 @@
             // 
             // buttonDeveloperInfo
             // 
-            buttonDeveloperInfo.Location = new Point(26, 82);
+            buttonDeveloperInfo.Location = new Point(12, 66);
             buttonDeveloperInfo.Name = "buttonDeveloperInfo";
             buttonDeveloperInfo.Size = new Size(182, 23);
             buttonDeveloperInfo.TabIndex = 12;
@@ -104,7 +105,7 @@
             // 
             // buttonSystemInfo
             // 
-            buttonSystemInfo.Location = new Point(26, 120);
+            buttonSystemInfo.Location = new Point(12, 104);
             buttonSystemInfo.Name = "buttonSystemInfo";
             buttonSystemInfo.Size = new Size(182, 23);
             buttonSystemInfo.TabIndex = 13;
@@ -115,7 +116,7 @@
             // labelChangeAvatar
             // 
             labelChangeAvatar.AutoSize = true;
-            labelChangeAvatar.Location = new Point(231, 25);
+            labelChangeAvatar.Location = new Point(217, 9);
             labelChangeAvatar.Name = "labelChangeAvatar";
             labelChangeAvatar.Size = new Size(89, 15);
             labelChangeAvatar.TabIndex = 14;
@@ -123,7 +124,7 @@
             // 
             // buttonPreviousAvatar
             // 
-            buttonPreviousAvatar.Location = new Point(229, 148);
+            buttonPreviousAvatar.Location = new Point(215, 132);
             buttonPreviousAvatar.Name = "buttonPreviousAvatar";
             buttonPreviousAvatar.Size = new Size(47, 23);
             buttonPreviousAvatar.TabIndex = 15;
@@ -133,7 +134,7 @@
             // 
             // buttonNextAvatar
             // 
-            buttonNextAvatar.Location = new Point(282, 148);
+            buttonNextAvatar.Location = new Point(268, 132);
             buttonNextAvatar.Name = "buttonNextAvatar";
             buttonNextAvatar.Size = new Size(47, 23);
             buttonNextAvatar.TabIndex = 16;
@@ -141,11 +142,22 @@
             buttonNextAvatar.UseVisualStyleBackColor = true;
             buttonNextAvatar.Click += buttonNextAvatar_Click;
             // 
+            // buttonLoadBotGame
+            // 
+            buttonLoadBotGame.Location = new Point(11, 170);
+            buttonLoadBotGame.Name = "buttonLoadBotGame";
+            buttonLoadBotGame.Size = new Size(93, 46);
+            buttonLoadBotGame.TabIndex = 17;
+            buttonLoadBotGame.Text = "Загрузить игру с ИИ";
+            buttonLoadBotGame.UseVisualStyleBackColor = true;
+            buttonLoadBotGame.Click += buttonLoadBotGame_Click;
+            // 
             // StartPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(340, 221);
+            ClientSize = new Size(325, 223);
+            Controls.Add(buttonLoadBotGame);
             Controls.Add(buttonNextAvatar);
             Controls.Add(buttonPreviousAvatar);
             Controls.Add(labelChangeAvatar);
@@ -180,5 +192,6 @@
         private Label labelChangeAvatar;
         private Button buttonPreviousAvatar;
         private Button buttonNextAvatar;
+        private Button buttonLoadBotGame;
     }
 }

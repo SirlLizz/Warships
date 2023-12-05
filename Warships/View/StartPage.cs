@@ -1,6 +1,8 @@
 ﻿namespace Warships
 {
     using System.Drawing;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.Runtime.Serialization;
     using System.Windows.Forms;
     using Warships.Models;
     using Warships.View;
@@ -173,6 +175,33 @@
                     pictureAvatar.Image = collectionImage.First();
                 }
             }
+        }
+
+        Game? game;
+        private void buttonLoadBotGame_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "game files (*.game)|*.game";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.None);
+                game = (Game)formatter.Deserialize(stream);
+                stream.Close();
+            }
+            if (game != null)
+            {
+                f1f2 = new Thread(openBattle);
+                f1f2.SetApartmentState(ApartmentState.STA);
+                f1f2.Start();
+                this.Close();
+            }
+
+        }
+
+        public void openBattle(object? obj)
+        {
+            Application.Run(new Battle(game));
         }
     }
 }
