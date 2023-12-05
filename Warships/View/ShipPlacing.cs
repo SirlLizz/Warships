@@ -65,6 +65,7 @@ namespace Warships
             shipSize = GetSizeOfShip();
 
         }
+
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             if (true && dragActive) //left click 
@@ -74,15 +75,7 @@ namespace Warships
                     if (Miscleanous.IsPossibleToPlaceHere(bf, shipSize, rotated, lastX, lastY))
                     {
                         Miscleanous.PlaceShip(bf, shipSize, rotated, lastX, lastY);
-                        Image icon = selectShipIcon(shipSize, rotated, true);
-                        int xSize = 40;
-                        int ySize = 40;
-                        if (rotated)
-                            ySize *= shipSize;
-                        else
-                            xSize *= shipSize;
-                        using (var graphics = Graphics.FromImage(RawOcean))
-                            graphics.DrawImage(icon, lastX * 50 + 5, lastY * 50 + 5, xSize, ySize);
+                        drawBoat(bf, shipSize, RawOcean, lastX, lastY, rotated);
 
                         shipCount[shipSize - 1]--;
                         updateLayout();
@@ -113,18 +106,8 @@ namespace Warships
                 Y = Y / 50;
                 if (X % 50 >= 25) X++;
                 if (Y % 50 >= 25) Y++;
+                drawBoat(bf, shipSize, ocean, X, Y, rotated);
 
-                using (var graphics = Graphics.FromImage(ocean))
-                {
-                    Image icon = selectShipIcon(shipSize, rotated, IsPossibleToPlaceHere(bf, shipSize, rotated, X, Y));
-                    int xSize = 40;
-                    int ySize = 40;
-                    if (rotated)
-                        ySize *= shipSize;
-                    else
-                        xSize *= shipSize;
-                    graphics.DrawImage(icon, X * 50 + 5, Y * 50 + 5, xSize, ySize);
-                }
                 lastX = X;
                 lastY = Y;
             }
@@ -160,6 +143,7 @@ namespace Warships
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == DialogResult.OK)
             {
+                resetLayout();
                 IFormatter formatter = new BinaryFormatter();
                 Stream stream = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.None);
                 bf = (BattleField)formatter.Deserialize(stream);
@@ -168,6 +152,7 @@ namespace Warships
             shipCount = new int[4] { 0, 0, 0, 0 };
 
             updateLayout();
+            updateBoat(bf, RawOcean);
         }
 
         private void buttonSavePattern_Click(object sender, EventArgs e)
@@ -199,6 +184,7 @@ namespace Warships
             shipCount = new int[4] { 0, 0, 0, 0 };
 
             updateLayout();
+            updateBoat(bf, RawOcean);
         }
 
         private void ShipPlacing_KeyPress(object sender, KeyEventArgs e)

@@ -39,15 +39,7 @@ namespace Warships
         {
 
             pictureBox2.Image = enemyField;
-            using (var graphics = Graphics.FromImage(myField))
-            {
-                for (int i = 0; i < 10; i++)
-                    for (int j = 0; j < 10; j++)
-                    {
-                        if (bf.shipPlacement[i, j])
-                            graphics.DrawImage(ship_1, i * 50 + 5, j * 50 + 5, 40, 40);
-                    }
-            }
+            updateBoat(bf, myField);
             pictureBox1.Image = myField;
             if (battleType == 0)
             {

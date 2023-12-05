@@ -1,4 +1,6 @@
-﻿namespace Warships.Models
+﻿using System.Security.Policy;
+
+namespace Warships.Models
 {
     internal static class Miscleanous
     {
@@ -98,6 +100,97 @@
                         rotated = r.Next() % 2 == 0;
                     } while (!IsPossibleToPlaceHere(bf, shipSize, rotated, x, y));
                     PlaceShip(bf, shipSize, rotated, x, y);
+                }
+            }
+        }
+
+        public static void drawBoat(BattleField bf, int shipSize, Bitmap image, int x, int y, bool rotated)
+        {
+            using (var graphics = Graphics.FromImage(image))
+            {
+                Image icon = selectShipIcon(shipSize, rotated, IsPossibleToPlaceHere(bf, shipSize, rotated, x, y));
+                int xSize = 50;
+                int ySize = 50;
+                if (rotated)
+                    ySize *= shipSize;
+                else
+                    xSize *= shipSize;
+                graphics.DrawImage(icon, x * 50 + 5, y * 50 + 5, xSize - 10, ySize - 10);
+            }
+        }
+
+        public static void updateBoat(BattleField bf, Bitmap image)
+        {
+            bool[,] boatInfo = (bool[,])bf.shipPlacement.Clone();
+            using (var graphics = Graphics.FromImage(image))
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        for (int boatLen = 4; boatLen > 1; boatLen--)
+                        {
+                            bool isRealy = true;
+                            for (int iterBoatLen = 0; iterBoatLen < boatLen; iterBoatLen++)
+                            {
+                                if (i + iterBoatLen < 10)
+                                {
+                                    if (!boatInfo[i + iterBoatLen, j])
+                                    {
+                                        isRealy = false;
+                                    }
+                                }
+                                else
+                                {
+                                    isRealy = false;
+                                }
+                            }
+                            if (isRealy)
+                            {
+                                drawBoat(bf, boatLen, image, i, j, false);
+                                for (int iterBoatLen = 0; iterBoatLen < boatLen; iterBoatLen++)
+                                {
+                                    boatInfo[i + iterBoatLen, j] = false;
+                                };
+                            }
+                            else
+                            {
+                                isRealy = true;
+                                for (int iterBoatLen = 0; iterBoatLen < boatLen; iterBoatLen++)
+                                {
+                                    if (j + iterBoatLen < 10)
+                                    {
+                                        if (!boatInfo[i, j + iterBoatLen])
+                                        {
+                                            isRealy = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        isRealy = false;
+                                    }
+                                }
+                                if (isRealy)
+                                {
+                                    drawBoat(bf, boatLen, image, i, j, true);
+                                    for (int iterBoatLen = 0; iterBoatLen < boatLen; iterBoatLen++)
+                                    {
+                                        boatInfo[i, j + iterBoatLen] = false;
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        if (boatInfo[i, j])
+                        {
+                            drawBoat(bf, 1, image, i, j, false);
+                        }
+                    }
                 }
             }
         }
