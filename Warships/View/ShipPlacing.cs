@@ -34,7 +34,7 @@ namespace Warships
         {
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
-                    if (bf.forbiddenToPlace[i, j] == true && bf.shipPlacement[i, j] == false) 
+                    if (bf.forbiddenToPlace[i, j] == true && bf.shipPlacement[i, j] == false)
                         Miscleanous.FillLines(RawOcean, i, j);
 
 
@@ -44,6 +44,10 @@ namespace Warships
             select_4_ship.Text = "четырехпалубных: " + shipCount[3];
 
             pictureBoxShipPlace.Image = RawOcean;
+            if (shipCount[0] == 0) { select_1_ship.Checked = false; select_1_ship.Enabled = false; selectNextShip(); }
+            if (shipCount[1] == 0) { select_2_ship.Checked = false; select_2_ship.Enabled = false; selectNextShip(); }
+            if (shipCount[2] == 0) { select_3_ship.Checked = false; select_3_ship.Enabled = false; selectNextShip(); }
+            if (shipCount[3] == 0) { select_4_ship.Checked = false; select_4_ship.Enabled = false; selectNextShip(); }
 
         }
         public void resetLayout()
@@ -82,14 +86,12 @@ namespace Warships
 
                         shipCount[shipSize - 1]--;
                         updateLayout();
-                        if (shipCount[0] == 0) { select_1_ship.Checked = false; select_1_ship.Enabled = false; selectNextShip(); }
-                        if (shipCount[1] == 0) { select_2_ship.Checked = false; select_2_ship.Enabled = false; selectNextShip(); }
-                        if (shipCount[2] == 0) { select_3_ship.Checked = false; select_3_ship.Enabled = false; selectNextShip(); }
-                        if (shipCount[3] == 0) { select_4_ship.Checked = false; select_4_ship.Enabled = false; selectNextShip(); }
+
                         shipSize = GetSizeOfShip();
                     }
             }
         }
+
         private void selectNextShip()
         {
             if (shipCount[0] != 0) select_1_ship.Checked = true;
@@ -97,6 +99,7 @@ namespace Warships
             else if (shipCount[2] != 0) select_3_ship.Checked = true;
             else if (shipCount[3] != 0) select_4_ship.Checked = true;
         }
+
         private void pictureBoxShipPlace_MouseMove(object sender, MouseEventArgs e)  //анимация
         {
             Bitmap ocean = new Bitmap(RawOcean);
@@ -195,6 +198,19 @@ namespace Warships
             FillRandomly(bf);
             shipCount = new int[4] { 0, 0, 0, 0 };
 
+            updateLayout();
+        }
+
+        private void ShipPlacing_KeyPress(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode.ToString() == "R" || e.KeyCode.ToString() == "r" || e.KeyCode.ToString() == "К" || e.KeyCode.ToString() == "к")
+            {
+                rotated = !rotated;
+            }
+            if(e.KeyCode.ToString() == "F1")
+            {
+                MessageBox.Show("Расстановка кораблей осуществляется мышкой или случайно, повернуть можно при нажатии кнопки R", "Справка");
+            }
             updateLayout();
         }
     }

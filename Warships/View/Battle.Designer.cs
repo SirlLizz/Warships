@@ -43,7 +43,8 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(12, 116);
+            pictureBox1.Location = new Point(10, 87);
+            pictureBox1.Margin = new Padding(3, 2, 3, 2);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(500, 500);
             pictureBox1.TabIndex = 2;
@@ -51,7 +52,8 @@
             // 
             // pictureBox2
             // 
-            pictureBox2.Location = new Point(532, 116);
+            pictureBox2.Location = new Point(526, 87);
+            pictureBox2.Margin = new Padding(3, 2, 3, 2);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(500, 500);
             pictureBox2.TabIndex = 3;
@@ -61,18 +63,20 @@
             // 
             // pictureBox3
             // 
-            pictureBox3.Location = new Point(12, 12);
+            pictureBox3.Location = new Point(10, 9);
+            pictureBox3.Margin = new Padding(3, 2, 3, 2);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(101, 93);
+            pictureBox3.Size = new Size(88, 70);
             pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox3.TabIndex = 4;
             pictureBox3.TabStop = false;
             // 
             // pictureBox4
             // 
-            pictureBox4.Location = new Point(931, 12);
+            pictureBox4.Location = new Point(938, 9);
+            pictureBox4.Margin = new Padding(3, 2, 3, 2);
             pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(101, 93);
+            pictureBox4.Size = new Size(88, 70);
             pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox4.TabIndex = 5;
             pictureBox4.TabStop = false;
@@ -80,35 +84,35 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(133, 23);
+            label1.Location = new Point(116, 17);
             label1.Name = "label1";
-            label1.Size = new Size(50, 20);
+            label1.Size = new Size(38, 15);
             label1.TabIndex = 6;
             label1.Text = "label1";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(861, 23);
+            label2.Location = new Point(882, 17);
             label2.Name = "label2";
-            label2.Size = new Size(50, 20);
+            label2.Size = new Size(38, 15);
             label2.TabIndex = 7;
             label2.Text = "label2";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(462, 35);
+            label3.Location = new Point(500, 44);
             label3.Name = "label3";
-            label3.Size = new Size(50, 20);
+            label3.Size = new Size(38, 15);
             label3.TabIndex = 8;
             label3.Text = "label3";
             // 
             // Battle
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1051, 690);
+            ClientSize = new Size(1031, 595);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -116,6 +120,7 @@
             Controls.Add(pictureBox3);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Battle";
             Text = "Battle";
             Load += Battle_Load;

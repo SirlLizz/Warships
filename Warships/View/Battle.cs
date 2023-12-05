@@ -98,9 +98,9 @@ namespace Warships
                         label3.Text = "Выстрел противника!";
                     }
                 }
-                
-                
-  
+
+
+
                 if (battleType == 0 && botCanShoot)
                 {
                     bool enemyMissed = false;
@@ -130,36 +130,38 @@ namespace Warships
                     botCanShoot = false;
                     youCanShoot = true;
                     label3.Text = "Ваш выстрел!";
-                } 
+                }
             }
 
         }
-            private void pictureBox2_MouseMove(object sender, MouseEventArgs e)
-            {
-                int X = e.Location.X;
-                int Y = e.Location.Y;
-                X = X / 50;
-                Y = Y / 50;
-                if (X % 50 >= 25) X++;
-                if (Y % 50 >= 25) Y++;
+        private void pictureBox2_MouseMove(object sender, MouseEventArgs e)
+        {
+            int X = e.Location.X;
+            int Y = e.Location.Y;
+            X = X / 50;
+            Y = Y / 50;
+            if (X % 50 >= 25) X++;
+            if (Y % 50 >= 25) Y++;
 
-                if (X != lastX || Y != lastY)
+            if (X != lastX || Y != lastY)
+            {
+                Bitmap enemyFieldEnimated = new Bitmap(enemyField);
+                using (var graphics = Graphics.FromImage(enemyFieldEnimated))
                 {
-                    Bitmap enemyFieldEnimated = new Bitmap(enemyField);
-                    using (var graphics = Graphics.FromImage(enemyFieldEnimated))
+                    if (bf.shooted[X, Y])
                     {
-                        if (bf.shooted[X, Y]) {
-                            graphics.DrawImage(redKrest, X * 50 + 5, Y * 50 + 5, 40, 40);
-                        } else
-                        {
-                            graphics.DrawImage(aim, X * 50 + 5, Y * 50 + 5, 40, 40);
-                        }
+                        graphics.DrawImage(redKrest, X * 50 + 5, Y * 50 + 5, 40, 40);
                     }
-                    pictureBox2.Image = enemyFieldEnimated;
-                    lastX = X;
-                    lastY = Y;
+                    else
+                    {
+                        graphics.DrawImage(aim, X * 50 + 5, Y * 50 + 5, 40, 40);
+                    }
                 }
+                pictureBox2.Image = enemyFieldEnimated;
+                lastX = X;
+                lastY = Y;
             }
-        
+        }
+
     }
 }

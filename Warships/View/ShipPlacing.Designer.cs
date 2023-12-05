@@ -229,9 +229,12 @@
             Controls.Add(pictureBoxShipPlace);
             Controls.Add(buttonLoadPattern);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            KeyPreview = true;
             Margin = new Padding(3, 2, 3, 2);
             Name = "ShipPlacing";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Расстановка кораблей";
+            KeyDown += new KeyEventHandler(ShipPlacing_KeyPress);
             ((System.ComponentModel.ISupportInitialize)pictureBoxShipPlace).EndInit();
             groupBoxManualPlasing.ResumeLayout(false);
             groupBoxManualPlasing.PerformLayout();

@@ -58,15 +58,15 @@
             y *= 50;
             using (var graphics = Graphics.FromImage(bmp))
             {
-                Pen blackPen = new Pen(Color.Red, 1);
-                graphics.DrawLine(blackPen, x + 8, y, x + 49, y + 12);
-                graphics.DrawLine(blackPen, x + 1, y + 5, x + 50, y + 20);
-                graphics.DrawLine(blackPen, x + 30, y, x + 49, y + 5);
-                graphics.DrawLine(blackPen, x + 1, y + 5, x + 49, y + 20);
-                graphics.DrawLine(blackPen, x + 1, y + 23, x + 50, y + 38);
-                graphics.DrawLine(blackPen, x + 1, y + 13, x + 49, y + 28);
-                graphics.DrawLine(blackPen, x + 1, y + 32, x + 49, y + 47);
-                graphics.DrawLine(blackPen, x + 1, y + 40, x + 30, y + 49);
+                Pen redPen = new Pen(Color.Red, 1);
+                graphics.DrawLine(redPen, x + 8, y, x + 49, y + 12);
+                graphics.DrawLine(redPen, x + 1, y + 5, x + 50, y + 20);
+                graphics.DrawLine(redPen, x + 30, y, x + 49, y + 5);
+                graphics.DrawLine(redPen, x + 1, y + 5, x + 49, y + 20);
+                graphics.DrawLine(redPen, x + 1, y + 23, x + 50, y + 38);
+                graphics.DrawLine(redPen, x + 1, y + 13, x + 49, y + 28);
+                graphics.DrawLine(redPen, x + 1, y + 32, x + 49, y + 47);
+                graphics.DrawLine(redPen, x + 1, y + 40, x + 30, y + 49);
             }
         }
 
