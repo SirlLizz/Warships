@@ -1,73 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Warships.Enum;
 
 namespace Warships.Models
 {
     public class Bot
     {
-        public string nickname = "AI";
-        public Image icon = Image.FromFile("Resources/avs/0.png");
-        readonly BattleField bf = new();
+        public string Name { get; set; } = string.Empty;
+        public Image Ave { get; set; } = Image.FromFile("Resources/1.png");
+        public BattleField BattleField { get; set; } = new();
+        public BattleType Difficulty { get; set; } = BattleType.vsEasyBot;
 
-        public Bot()
+        public Bot(BattleType difficulty)
         {
-            Miscleanous.FillRandomly(bf);
+            Difficulty = difficulty;
+            Miscleanous.FillRandomly(BattleField);
         }
 
         public bool ShotToBot(Point p)
         {
-            if (bf.shipPlacement[p.X, p.Y])
+            if (BattleField.shipPlacement[p.X, p.Y])
             {
-                bf.shipDestroyed[p.X, p.Y] = true;
+                BattleField.shipDestroyed[p.X, p.Y] = true;
                 return true;
             }
             else
                 return false;
         }
+
+        private int lastX, lastY;
         public Point ShotByBot()
         {
 
             Random r = new Random();
-            int x, y;
-            do
+            int x = 0, y = 0;
+            switch (Difficulty)
             {
-                x = r.Next(10);
-                y = r.Next(10);
-            } while (bf.shooted[x, y] == true);
-            bf.shooted[x, y] = true;
-            Point point = new Point(x, y);
-            return point;
-        }
-        public bool IsDestroyedWhole(int pX, int pY)
-        {
-            int X = pX;
-            int Y = pY;
-            while (X > 0 && bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == true) X--;
-            if (bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == false) return false;
+                case BattleType.vsMediumBot:
+                    if (BattleField.hitted[lastX, lastY])
+                    {
+                        if(lastX + 1 < 10)
+                        {
+                            if(!BattleField.shooted[lastX + 1, lastY] && !BattleField.forbiddenToShot[lastX + 1, lastY])
+                            {
+                                BattleField.shooted[x, y] = true;
+                                return new Point(lastX + 1, lastY);
+                            }
+                        }
+                        if (lastX - 1 >= 0)
+                        {
+                            if (!BattleField.shooted[lastX - 1, lastY] && !BattleField.forbiddenToShot[lastX - 1, lastY])
+                            {
+                                BattleField.shooted[x, y] = true;
+                                return new Point(lastX - 1, lastY);
+                            }
+                        }
+                        if (lastY + 1 < 10)
+                        {
+                            if (!BattleField.shooted[lastX, lastY + 1] && !BattleField.forbiddenToShot[lastX, lastY + 1])
+                            {
+                                BattleField.shooted[x, y] = true;
+                                return new Point(lastX, lastY + 1);
+                            }
+                        }
+                        if (lastY - 1 >= 0)
+                        {
+                            if (!BattleField.shooted[lastX, lastY - 1] && !BattleField.forbiddenToShot[lastX, lastY - 1])
+                            {
+                                BattleField.shooted[x, y] = true;
+                                return new Point(lastX, lastY - 1);
+                            }
+                        }
+                    }
+                    do
+                    {
+                        x = r.Next(10);
+                        y = r.Next(10);
+                        lastX = x;
+                        lastY = y;
+                    }
+                    while (BattleField.shooted[x, y] || BattleField.forbiddenToShot[x, y]);
+                    BattleField.shooted[x, y] = true;
+                    return new Point(x, y);
+                case BattleType.vsHardBot:
+                case BattleType.vsEasyBot:
+                default:
+                    do
+                    {
+                        x = r.Next(10);
+                        y = r.Next(10);
+                    }
+                    while (BattleField.shooted[x, y] || BattleField.forbiddenToShot[x, y]);
+                    BattleField.shooted[x, y] = true;
+                    return new Point(x, y);
+            }
 
-            X = pX;
-            Y = pY;
-            while (X < 9 && bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == true) X++;
-            if (bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == false) return false;
-
-            X = pX;
-            Y = pY;
-            while (Y > 0 && bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == true) Y--;
-            if (bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == false) return false;
-
-            X = pX;
-            Y = pY;
-            while (Y < 9 && bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == true) Y++;
-            if (bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == false) return false;
-
-            return true;
-        }
-        public bool AllIsDestroyed()
-        {
-            return Miscleanous.AllIsDestroyed(bf);
         }
 
     }

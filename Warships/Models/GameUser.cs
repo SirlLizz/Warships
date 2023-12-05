@@ -1,5 +1,6 @@
 ﻿namespace Warships.Models
 {
+    [Serializable]
     public class GameUser
     {
         public string Name { get; set; } = string.Empty;

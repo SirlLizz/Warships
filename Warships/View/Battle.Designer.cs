@@ -35,6 +35,7 @@
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
+            buttonSaveGame = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -108,11 +109,22 @@
             label3.TabIndex = 8;
             label3.Text = "label3";
             // 
+            // buttonSaveGame
+            // 
+            buttonSaveGame.Location = new Point(458, 9);
+            buttonSaveGame.Name = "buttonSaveGame";
+            buttonSaveGame.Size = new Size(122, 23);
+            buttonSaveGame.TabIndex = 9;
+            buttonSaveGame.Text = "Сохранить игру";
+            buttonSaveGame.UseVisualStyleBackColor = true;
+            buttonSaveGame.Click += buttonSaveGame_Click;
+            // 
             // Battle
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1031, 595);
+            Controls.Add(buttonSaveGame);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -122,6 +134,7 @@
             Controls.Add(pictureBox1);
             Margin = new Padding(3, 2, 3, 2);
             Name = "Battle";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Battle";
             Load += Battle_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -141,5 +154,6 @@
         private Label label1;
         private Label label2;
         private Label label3;
+        private Button buttonSaveGame;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Security.Policy;
+﻿using System.Collections.Generic;
+using System.Security.Policy;
 
 namespace Warships.Models
 {
@@ -54,6 +55,32 @@ namespace Warships.Models
             if (x < 9 && y > 0) forbidden[x + 1, y - 1] = true;
             if (x < 9 && y < 9) forbidden[x + 1, y + 1] = true;
         }
+
+        public static void ForbidShotBoat(BattleField bf, int lastX, int lastY)
+        {
+            int X = lastX;
+            int Y = lastY;
+            while (X > 0 && bf.hitted[X, Y] == true)
+            {
+                Miscleanous.ForbidAround(bf.forbiddenToShot, X, Y); X--;
+            }
+            X = lastX; Y = lastY;
+            while (X < 9 && bf.hitted[X, Y] == true)
+            {
+                Miscleanous.ForbidAround(bf.forbiddenToShot, X, Y); X++;
+            }
+            X = lastX; Y = lastY;
+            while (Y > 0 && bf.hitted[X, Y] == true)
+            {
+                Miscleanous.ForbidAround(bf.forbiddenToShot, X, Y); Y--;
+            }
+            X = lastX; Y = lastY;
+            while (Y < 9 && bf.hitted[X, Y] == true)
+            {
+                Miscleanous.ForbidAround(bf.forbiddenToShot, X, Y); Y++;
+            }
+        }
+
         public static void FillLines(Bitmap bmp, int x, int y)
         {
             x *= 50;
@@ -102,6 +129,31 @@ namespace Warships.Models
                     PlaceShip(bf, shipSize, rotated, x, y);
                 }
             }
+        }
+
+        public static bool IsDestroyedWhole(BattleField bf, int pX, int pY)
+        {
+            int X = pX;
+            int Y = pY;
+            while (X > 0 && bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == true) X--;
+            if (bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == false) return false;
+
+            X = pX;
+            Y = pY;
+            while (X < 9 && bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == true) X++;
+            if (bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == false) return false;
+
+            X = pX;
+            Y = pY;
+            while (Y > 0 && bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == true) Y--;
+            if (bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == false) return false;
+
+            X = pX;
+            Y = pY;
+            while (Y < 9 && bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == true) Y++;
+            if (bf.shipPlacement[X, Y] == true && bf.shipDestroyed[X, Y] == false) return false;
+
+            return true;
         }
 
         public static void FillRandomBeach(BattleField bf)
