@@ -2,6 +2,8 @@
 using System.Runtime.Serialization;
 using static Warships.Models.Miscleanous;
 using Warships.Models;
+using System.Windows.Forms;
+using System.Security.Cryptography;
 
 namespace Warships
 {
@@ -127,20 +129,29 @@ namespace Warships
         {
             rotated = !rotated;
         }
+
+        Thread? f1f2;
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (shipCount[0] == 0 && shipCount[1] == 0 && shipCount[2] == 0 && shipCount[3] == 0)
             {
-                int bt = 0;
-                g.FirstUser.BattleField = bf;
-                Battle btlWindow = new Battle(g);
-                btlWindow.Show();
                 this.Close();
+                f1f2 = new Thread(openBattle);
+                f1f2.SetApartmentState(ApartmentState.STA);
+                f1f2.Start();
             }
         }
+
+        public void openBattle(object? obj)
+        {
+            g.FirstUser.BattleField = bf;
+            Application.Run(new Battle(g));
+        }
+
         private void buttonLoadPattern_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "plc files (*.plc)|*.plc";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 resetLayout();
@@ -160,6 +171,7 @@ namespace Warships
             if (shipCount[0] == 0 && shipCount[1] == 0 && shipCount[2] == 0 && shipCount[3] == 0)
             {
                 SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "plc files (*.plc)|*.plc";
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     IFormatter formatter = new BinaryFormatter();

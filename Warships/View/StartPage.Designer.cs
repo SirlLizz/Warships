@@ -90,6 +90,7 @@
             pictureAvatar.SizeMode = PictureBoxSizeMode.Zoom;
             pictureAvatar.TabIndex = 11;
             pictureAvatar.TabStop = false;
+            pictureAvatar.Click += pictureAvatar_Click;
             // 
             // buttonDeveloperInfo
             // 
@@ -171,8 +172,6 @@
         private Label label1;
         private TextBox textBoxUserName;
         private Button buttonStartLocalGame;
-        private Button button3;
-        private Button button4;
         private TextBox textBox2;
         private Button button5;
         private PictureBox pictureAvatar;

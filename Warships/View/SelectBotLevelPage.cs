@@ -5,6 +5,7 @@ namespace Warships.View
     public partial class SelectBotLevelPage : Form
     {
         private readonly Game game = new();
+        Thread? f1f2;
         public SelectBotLevelPage(GameUser user)
         {
             InitializeComponent();
@@ -13,12 +14,26 @@ namespace Warships.View
 
         private void buttonToStartPage_Click(object sender, EventArgs e)
         {
-            StartPage startPage = new(game.FirstUser);
-            startPage.Show();
             this.Close();
+            f1f2 = new Thread(openStartPage);
+            f1f2.SetApartmentState(ApartmentState.STA);
+            f1f2.Start();
+        }
+
+        public void openStartPage(object? obj)
+        {
+            Application.Run(new StartPage(game.FirstUser));
         }
 
         private void buttonNext_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            f1f2 = new Thread(openShipPlacingPage);
+            f1f2.SetApartmentState(ApartmentState.STA);
+            f1f2.Start();
+        }
+
+        public void openShipPlacingPage(object? obj)
         {
             if (LightLevelDifficulty.Checked)
             {
@@ -32,9 +47,7 @@ namespace Warships.View
             {
                 game.BattleType = Enum.BattleType.vsHardBot;
             }
-            ShipPlacing layout = new(game);
-            layout.Show();
-            this.Close();
+            Application.Run(new ShipPlacing(game));
         }
     }
 }

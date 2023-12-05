@@ -1,5 +1,6 @@
 ﻿namespace Warships
 {
+    using System.Drawing;
     using System.Windows.Forms;
     using Warships.Models;
     using Warships.View;
@@ -62,7 +63,7 @@
                 {
                     throw new Exception();
                 }
-                if(user.Ave != null)
+                if (user.Ave != null)
                 {
                     pictureAvatar.Image = user.Ave;
                 }
@@ -75,13 +76,20 @@
 
         }
 
+        Thread? f1f2;
         private void buttonStartBotGame_Click(object sender, EventArgs e)
+        {
+            f1f2 = new Thread(openBotGame);
+            f1f2.SetApartmentState(ApartmentState.STA);
+            f1f2.Start();
+            this.Close();
+        }
+
+        public void openBotGame(object? obj)
         {
             user.Ave = node.Value;
             user.Name = textBoxUserName.Text;
-            SelectBotLevelPage selectBotLevelPage = new(user);
-            selectBotLevelPage.Show();
-            this.Hide();
+            Application.Run(new SelectBotLevelPage(user));
         }
 
         private void buttonStartLocalGame_Click(object sender, EventArgs e)
@@ -139,6 +147,31 @@
             {
                 node = node.Next;
                 pictureAvatar.Image = node.Value;
+            }
+        }
+
+        private void pictureAvatar_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    collectionImage.AddFirst(Image.FromFile(openFileDialog.FileName));
+                    var findObject = collectionImage.Find(collectionImage.First());
+
+                    if (findObject != null)
+                    {
+                        node = findObject;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+                    pictureAvatar.Image = collectionImage.First();
+                }
             }
         }
     }
