@@ -78,13 +78,12 @@
 
         }
 
-        Thread? f1f2;
         private void buttonStartBotGame_Click(object sender, EventArgs e)
         {
-            f1f2 = new Thread(openBotGame);
+            Thread f1f2 = new Thread(openBotGame);
             f1f2.SetApartmentState(ApartmentState.STA);
             f1f2.Start();
-            this.Close();
+            Close();
         }
 
         public void openBotGame(object? obj)
@@ -122,6 +121,17 @@
                             string data = null;
                         }
                         catch (Exception ex) { }*/
+            Thread f1f2 = new Thread(openLocalGame);
+            f1f2.SetApartmentState(ApartmentState.STA);
+            f1f2.Start();
+            Close();
+        }
+
+        public void openLocalGame(object? obj)
+        {
+            user.Ave = node.Value;
+            user.Name = textBoxUserName.Text;
+            Application.Run(new LocalGameSelect(user));
         }
 
         private void buttonDeveloperInfo_Click(object sender, EventArgs e)
@@ -191,10 +201,10 @@
             }
             if (game != null)
             {
-                f1f2 = new Thread(openBattle);
+                Thread f1f2 = new(openBattle);
                 f1f2.SetApartmentState(ApartmentState.STA);
                 f1f2.Start();
-                this.Close();
+                Close();
             }
 
         }

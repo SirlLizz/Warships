@@ -51,7 +51,7 @@ namespace Warships
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            if(game.BattleType != Enum.BattleType.Local)
+            if (game.BattleType != Enum.BattleType.Local)
             {
                 LocalGame();
             }
