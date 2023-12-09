@@ -95,32 +95,6 @@
 
         private void buttonStartLocalGame_Click(object sender, EventArgs e)
         {
-            /*            IPHostEntry ipHost = Dns.GetHostEntry("localhost");
-                        IPAddress ipAddr = ipHost.AddressList[0];
-                        IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, 11000);
-
-                        Socket sListener = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                        label1.Text = "Ваш IP: " + ipHost.AddressList[1] + "/" + ipEndPoint.Port;
-                        buttonStartBotGame.Hide();
-                        buttonStartLocalGame.Hide();
-                        button3.Hide();
-                        textBoxUserName.Hide();
-                        textBox2.Hide();
-                        playerName = textBoxUserName.Text;
-
-                        button4.Show();
-                        try
-                        {
-                            sListener.Bind(ipEndPoint);
-                            sListener.Listen(1);
-                            label1.Text = "fnjafbalkfa";
-                            //Console.WriteLine("Ожидаем соединение через порт {0}", ipEndPoint);
-
-                            // Программа приостанавливается, ожидая входящее соединение
-                            //Socket handler = sListener.Accept();
-                            string data = null;
-                        }
-                        catch (Exception ex) { }*/
             Thread f1f2 = new Thread(openLocalGame);
             f1f2.SetApartmentState(ApartmentState.STA);
             f1f2.Start();

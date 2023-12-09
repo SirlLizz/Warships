@@ -6,6 +6,7 @@
         vsEasyBot,
         vsMediumBot,
         vsHardBot,
-        Local
+        server,
+        client
     }
 }

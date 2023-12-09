@@ -31,7 +31,7 @@
             buttonToStartPage = new Button();
             buttonConnect = new Button();
             labelIPaddress = new Label();
-            textBoxIPaddress = new TextBox();
+            textBoxIpAddress = new TextBox();
             SuspendLayout();
             // 
             // buttonToStartPage
@@ -52,6 +52,7 @@
             buttonConnect.TabIndex = 1;
             buttonConnect.Text = "Подключение";
             buttonConnect.UseVisualStyleBackColor = true;
+            buttonConnect.Click += buttonConnect_ClickAsync;
             // 
             // labelIPaddress
             // 
@@ -62,19 +63,19 @@
             labelIPaddress.TabIndex = 2;
             labelIPaddress.Text = "IP-адрес";
             // 
-            // textBoxIPaddress
+            // textBoxIpAddress
             // 
-            textBoxIPaddress.Location = new Point(12, 27);
-            textBoxIPaddress.Name = "textBoxIPaddress";
-            textBoxIPaddress.Size = new Size(232, 23);
-            textBoxIPaddress.TabIndex = 3;
+            textBoxIpAddress.Location = new Point(12, 27);
+            textBoxIpAddress.Name = "textBoxIpAddress";
+            textBoxIpAddress.Size = new Size(117, 23);
+            textBoxIpAddress.TabIndex = 3;
             // 
             // ConnectLocalGamePage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(254, 86);
-            Controls.Add(textBoxIPaddress);
+            Controls.Add(textBoxIpAddress);
             Controls.Add(labelIPaddress);
             Controls.Add(buttonConnect);
             Controls.Add(buttonToStartPage);
@@ -91,6 +92,6 @@
         private Button buttonToStartPage;
         private Button buttonConnect;
         private Label labelIPaddress;
-        private TextBox textBoxIPaddress;
+        private TextBox textBoxIpAddress;
     }
 }

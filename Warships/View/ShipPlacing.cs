@@ -4,6 +4,8 @@ using static Warships.Models.Miscleanous;
 using Warships.Models;
 using System.Windows.Forms;
 using System.Security.Cryptography;
+using System.Net.Sockets;
+using System.Text;
 
 namespace Warships
 {
@@ -11,12 +13,22 @@ namespace Warships
     {
         Game g;
         BattleField bf = new BattleField();
+        Socket socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         Bitmap RawOcean = new Bitmap("Resources/water-4.jpg");
 
         public ShipPlacing(Game g)
         {
             this.g = g;
+
+            InitializeComponent();
+            updateLayout();
+        }
+
+        public ShipPlacing(Game g, Socket newSocket)
+        {
+            this.g = g;
+            this.socket = newSocket;
 
             InitializeComponent();
             updateLayout();
@@ -133,11 +145,31 @@ namespace Warships
         {
             if (shipCount[0] == 0 && shipCount[1] == 0 && shipCount[2] == 0 && shipCount[3] == 0)
             {
-                this.Close();
-                f1f2 = new Thread(openBattle);
-                f1f2.SetApartmentState(ApartmentState.STA);
-                f1f2.Start();
+                if(g.BattleType != Enum.BattleType.client && g.BattleType != Enum.BattleType.server)
+                {
+                    this.Close();
+                    f1f2 = new Thread(openBattle);
+                    f1f2.SetApartmentState(ApartmentState.STA);
+                    f1f2.Start();
+                }
+                else
+                {
+                    buttonStart.Enabled = false;
+                    socket.Send(Encoding.ASCII.GetBytes("Start"));
+                    int bytesRec = socket.Receive(new byte[1024]);
+                    this.Close();
+                    f1f2 = new Thread(openBattleLocal);
+                    f1f2.SetApartmentState(ApartmentState.STA);
+                    f1f2.Start();
+                }
+
             }
+        }
+
+        public void openBattleLocal(object? obj)
+        {
+            g.FirstUser.BattleField = bf;
+            Application.Run(new Battle(g, socket));
         }
 
         public void openBattle(object? obj)

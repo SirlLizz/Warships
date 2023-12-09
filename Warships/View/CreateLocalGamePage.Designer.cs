@@ -28,9 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             labelIPaddress = new Label();
             buttonToStartPage = new Button();
             buttonNext = new Button();
+            labelIpAddressView = new Label();
+            toolTipLabel = new ToolTip(components);
             SuspendLayout();
             // 
             // labelIPaddress
@@ -60,12 +63,24 @@
             buttonNext.TabIndex = 2;
             buttonNext.Text = "Далее";
             buttonNext.UseVisualStyleBackColor = true;
+            buttonNext.Click += buttonNext_Click;
+            // 
+            // labelIpAddressView
+            // 
+            labelIpAddressView.AutoSize = true;
+            labelIpAddressView.Location = new Point(12, 31);
+            labelIpAddressView.Name = "labelIpAddressView";
+            labelIpAddressView.Size = new Size(0, 15);
+            labelIpAddressView.TabIndex = 3;
+            labelIpAddressView.Click += labelIpAddressView_Click;
+            labelIpAddressView.MouseEnter += labelIpAddressView_MouseEnter;
             // 
             // CreateLocalGamePage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(237, 88);
+            Controls.Add(labelIpAddressView);
             Controls.Add(buttonNext);
             Controls.Add(buttonToStartPage);
             Controls.Add(labelIPaddress);
@@ -73,6 +88,7 @@
             Name = "CreateLocalGamePage";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Создание игры";
+            Load += CreateLocalGamePage_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -82,5 +98,7 @@
         private Label labelIPaddress;
         private Button buttonToStartPage;
         private Button buttonNext;
+        private Label labelIpAddressView;
+        private ToolTip toolTipLabel;
     }
 }

@@ -85,7 +85,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(116, 17);
+            label1.Location = new Point(236, 17);
             label1.Name = "label1";
             label1.Size = new Size(38, 15);
             label1.TabIndex = 6;
@@ -94,7 +94,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(882, 17);
+            label2.Location = new Point(757, 17);
             label2.Name = "label2";
             label2.Size = new Size(38, 15);
             label2.TabIndex = 7;
@@ -137,7 +137,6 @@
             Name = "Battle";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Battle";
-            Load += Battle_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();

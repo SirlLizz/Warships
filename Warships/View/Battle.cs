@@ -2,6 +2,9 @@
 using System.Runtime.Serialization;
 using Warships.Models;
 using static Warships.Models.Miscleanous;
+using System.Net.Sockets;
+using System;
+using Warships.View;
 
 namespace Warships
 {
@@ -11,6 +14,7 @@ namespace Warships
         bool botCanShoot = false;
         Bot bot;
         Game game;
+        Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         int lastX = 1;
         int lastY = 1;
@@ -25,6 +29,24 @@ namespace Warships
             bot = new Bot(game.BattleType);
             label2.Text = bot.Name;
             pictureBox4.Image = bot.Ave;
+            BattleLoad();
+        }
+
+        public Battle(Game newGame, Socket newSocket)
+        {
+            game = newGame;
+            socket = newSocket;
+            InitializeComponent();
+
+            label1.Text = game.FirstUser.Name;
+            pictureBox3.Image = game.FirstUser.Ave;
+
+            SendSocetData(game.FirstUser);
+            game.SecondUser = GetSocetData<GameUser>();
+
+            label2.Text = game.SecondUser.Name;
+            pictureBox4.Image = game.SecondUser.Ave;
+            BattleLoad();
         }
 
         Bitmap myField = new Bitmap("Resources/water-4.jpg");
@@ -33,25 +55,43 @@ namespace Warships
         Image aim = Image.FromFile("Resources/aim.png");
         Image exp = Image.FromFile("Resources/exp.png");
         Image mis = Image.FromFile("Resources/black_krest.png");
+        bool oppHit = false;
 
-        private void Battle_Load(object sender, EventArgs e)
+        private void BattleLoad()
         {
             pictureBox2.Image = enemyField;
             updateBoat(game.FirstUser.BattleField, myField);
             pictureBox1.Image = myField;
-            if (game.BattleType != Enum.BattleType.Local)
+            switch (game.BattleType)
             {
-                pictureBox2.Image = enemyField;
-                label3.Text = "Ваш выстрел!";
-                youCanShoot = true;
+                case Enum.BattleType.client:
+                    label3.Text = "Выстрел противника!";
+                    buttonSaveGame.Visible = false;
 
-                ReloadGameboard();
+                    CheckHitLocalGame();
+                    game.SecondUser.BattleField = GetSocetData<BattleField>();
+
+                    break;
+                case Enum.BattleType.server:
+                    label3.Text = "Ваш выстрел!";
+                    buttonSaveGame.Visible = false;
+                    break;
+                default:
+                    pictureBox2.Image = enemyField;
+                    label3.Text = "Ваш выстрел!";
+                    youCanShoot = true;
+                    ReloadGameboard();
+                    break;
             }
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            if (game.BattleType != Enum.BattleType.Local)
+            if (game.BattleType != Enum.BattleType.client && game.BattleType != Enum.BattleType.server)
+            {
+                BotGame();
+            }
+            else
             {
                 LocalGame();
             }
@@ -59,10 +99,8 @@ namespace Warships
 
         private void pictureBox2_MouseMove(object sender, MouseEventArgs e)
         {
-            int X = e.Location.X;
-            int Y = e.Location.Y;
-            X = X / 50;
-            Y = Y / 50;
+            int X = e.Location.X / 50;
+            int Y = e.Location.Y / 50;
             if (X % 50 >= 25) X++;
             if (Y % 50 >= 25) Y++;
 
@@ -83,20 +121,6 @@ namespace Warships
                 pictureBox2.Image = enemyFieldEnimated;
                 lastX = X;
                 lastY = Y;
-            }
-        }
-
-        private void buttonSaveGame_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "game files (*.game)|*.game";
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                game.SecondUser.BattleField = bot.BattleField;
-                IFormatter formatter = new BinaryFormatter();
-                Stream stream = new FileStream(sfd.FileName, FileMode.Create, FileAccess.Write, FileShare.None);
-                formatter.Serialize(stream, game);
-                stream.Close();
             }
         }
 
@@ -154,7 +178,7 @@ namespace Warships
             }
         }
 
-        private void LocalGame()
+        private void BotGame()
         {
             if (youCanShoot && game.FirstUser.BattleField.shooted[lastX, lastY] == false
                 && game.FirstUser.BattleField.forbiddenToShot[lastX, lastY] == false)
@@ -237,6 +261,137 @@ namespace Warships
                     youCanShoot = true;
                     label3.Text = "Ваш выстрел!";
                 }
+            }
+        }
+
+        private void LocalGame()
+        {
+            Point point = new Point(lastX, lastY);
+            game.FirstUser.BattleField.shooted[lastX, lastY] = true;
+            SendSocetData<Point>(point);
+            game.SecondUser.BattleField = GetSocetData<BattleField>();
+
+            using (var graphics = Graphics.FromImage(enemyField))
+            {
+                if (game.SecondUser.BattleField.shipDestroyed[point.X, point.Y]) //если попали
+                {
+                    graphics.DrawImage(exp, lastX * 50 + 5, lastY * 50 + 5, 40, 40);
+                    game.FirstUser.BattleField.hitted[lastX, lastY] = true;
+                    if (IsDestroyedWhole(game.SecondUser.BattleField, lastX, lastY))  //если полностью уничтожили корабль противника
+                    {
+                        Miscleanous.ForbidShotBoat(game.FirstUser.BattleField, lastX, lastY);
+
+                        for (int i = 0; i < 10; i++)
+                        {
+                            for (int j = 0; j < 10; j++)
+                            {
+                                if (game.FirstUser.BattleField.hitted[i, j] == false
+                                    && game.FirstUser.BattleField.forbiddenToShot[i, j] == true)
+                                {
+                                    Miscleanous.FillLines(enemyField, i, j);
+                                }
+                            }
+
+                        }
+
+                    }
+                    if (AllIsDestroyed(game.SecondUser.BattleField)) 
+                    {
+                        MessageBox.Show("Победа!!!");
+                        SendSocetData<Point>(new Point(-1, -1));
+                        socket.Close();
+                        this.Close(); 
+                    }
+                }
+                else
+                {
+                    graphics.DrawImage(mis, lastX * 50 + 5, lastY * 50 + 5, 40, 40);
+                    label3.Text = "Выстрел противника!";
+                    SendSocetData(game.FirstUser.BattleField);
+                    CheckHitLocalGame();
+                    label3.Text = "Ваш выстрел!";
+                }
+            }
+        }
+
+        private void CheckHitLocalGame()
+        {
+            do
+            {
+                Point point = GetSocetData<Point>();
+                if(point.X == -1 && point.Y == -1)
+                {
+                    MessageBox.Show("Поражение");
+                    socket.Close();
+                    this.Close();
+                }
+                using (var graphics = Graphics.FromImage(myField))
+                {
+                    if (game.FirstUser.BattleField.shipPlacement[point.X, point.Y])
+                    {
+                        game.FirstUser.BattleField.shipDestroyed[point.X, point.Y] = true;
+                        oppHit = true;
+                        graphics.DrawImage(exp, point.X * 50 + 5, point.Y * 50 + 5, 40, 40);
+                    }
+                    else
+                    {
+                        oppHit = false;
+                        graphics.DrawImage(mis, point.X * 50 + 5, point.Y * 50 + 5, 40, 40);
+                    }
+                }
+
+                SendSocetData(game.FirstUser.BattleField);
+            }
+            while (oppHit);
+        }
+
+        private void SendSocetData<T>(T data)
+        {
+            byte[] dataBuffer;
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                binaryFormatter.Serialize(memoryStream, data);
+                dataBuffer = memoryStream.ToArray();
+            }
+            socket.Send(dataBuffer);
+        }
+
+        private T GetSocetData<T>()
+        {
+            byte[] receivedData = new byte[10000000];
+
+            // Получаем количество байтов, которые были фактически прочитаны
+            int bytesRead = socket.Receive(receivedData);
+
+            // Десериализуем полученные байты в объект
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            using (MemoryStream memoryStream = new MemoryStream(receivedData, 0, bytesRead))
+            {
+                T receivedObject = (T)binaryFormatter.Deserialize(memoryStream);
+                return receivedObject;
+            }
+        }
+
+        private void buttonSaveGame_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "game files (*.game)|*.game";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                game.SecondUser.BattleField = bot.BattleField;
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream(sfd.FileName, FileMode.Create, FileAccess.Write, FileShare.None);
+                formatter.Serialize(stream, game);
+                stream.Close();
+            }
+        }
+
+        private void ClearSocket()
+        {
+            while (socket.Available > 0)
+            {
+                int bytesRead = socket.Receive(new byte[10000000]);
             }
         }
     }
