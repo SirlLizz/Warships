@@ -7,7 +7,6 @@ namespace Warships
 {
     public partial class Battle : Form
     {
-        int battleType = 0;
         bool youCanShoot = false;
         bool botCanShoot = false;
         Bot bot;
@@ -40,81 +39,122 @@ namespace Warships
             pictureBox2.Image = enemyField;
             updateBoat(game.FirstUser.BattleField, myField);
             pictureBox1.Image = myField;
-            /*MessageBox.Show(game.SecondUser.BattleField.forbiddenToPlace[0, 9].ToString(), game.SecondUser.BattleField.forbiddenToShot[0, 9].ToString());
-            MessageBox.Show(game.SecondUser.BattleField.shipDestroyed[0, 9].ToString(), game.SecondUser.BattleField.shipPlacement[0, 9].ToString());
-            MessageBox.Show(game.SecondUser.BattleField.shooted[0, 9].ToString(), game.SecondUser.BattleField.hitted[0, 9].ToString());
-*/            if (battleType == 0)
+            if (game.BattleType != Enum.BattleType.Local)
             {
-
                 pictureBox2.Image = enemyField;
                 label3.Text = "Ваш выстрел!";
                 youCanShoot = true;
 
-                for (int i = 0; i < 10; i++)
+                ReloadGameboard();
+            }
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            if(game.BattleType != Enum.BattleType.Local)
+            {
+                LocalGame();
+            }
+        }
+
+        private void pictureBox2_MouseMove(object sender, MouseEventArgs e)
+        {
+            int X = e.Location.X;
+            int Y = e.Location.Y;
+            X = X / 50;
+            Y = Y / 50;
+            if (X % 50 >= 25) X++;
+            if (Y % 50 >= 25) Y++;
+
+            if (X != lastX || Y != lastY)
+            {
+                Bitmap enemyFieldEnimated = new Bitmap(enemyField);
+                using (var graphics = Graphics.FromImage(enemyFieldEnimated))
                 {
-                    for (int j = 0; j < 10; j++)
+                    if (game.FirstUser.BattleField.shooted[X, Y])
                     {
-                        using (var graphics = Graphics.FromImage(enemyField))
+                        graphics.DrawImage(redKrest, X * 50 + 5, Y * 50 + 5, 40, 40);
+                    }
+                    else
+                    {
+                        graphics.DrawImage(aim, X * 50 + 5, Y * 50 + 5, 40, 40);
+                    }
+                }
+                pictureBox2.Image = enemyFieldEnimated;
+                lastX = X;
+                lastY = Y;
+            }
+        }
+
+        private void buttonSaveGame_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "game files (*.game)|*.game";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                game.SecondUser.BattleField = bot.BattleField;
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream(sfd.FileName, FileMode.Create, FileAccess.Write, FileShare.None);
+                formatter.Serialize(stream, game);
+                stream.Close();
+            }
+        }
+
+        private void ReloadGameboard()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    using (var graphics = Graphics.FromImage(enemyField))
+                    {
+                        if (game.FirstUser.BattleField.hitted[i, j])
                         {
-                            if (game.SecondUser.BattleField.shipDestroyed[i, j])
+                            graphics.DrawImage(exp, i * 50 + 5, j * 50 + 5, 40, 40);
+                        }
+                        else
+                        {
+                            if (game.FirstUser.BattleField.shooted[i, j])
                             {
-                                graphics.DrawImage(exp, i * 50 + 5, j * 50 + 5, 40, 40);
+                                graphics.DrawImage(mis, i * 50 + 5, j * 50 + 5, 40, 40);
                             }
-                            if (game.FirstUser.BattleField.hitted[i, j])
+                            if (IsDestroyedWhole(bot.BattleField, i, j))  //если полностью уничтожили корабль противника
                             {
-                                graphics.DrawImage(exp, i * 50 + 5, j * 50 + 5, 40, 40);
-                            }
-                            else
-                            {
-                                if (game.FirstUser.BattleField.shooted[i, j])
-                                {
-                                    graphics.DrawImage(mis, i * 50 + 5, j * 50 + 5, 40, 40);
-                                }
-                                if (IsDestroyedWhole(bot.BattleField, i, j))  //если полностью уничтожили корабль противника
-                                {
-                                    Miscleanous.ForbidShotBoat(game.FirstUser.BattleField, i, j);
+                                Miscleanous.ForbidShotBoat(game.FirstUser.BattleField, i, j);
 
-                                    for (int k = 0; k < 10; k++)
+                                for (int k = 0; k < 10; k++)
+                                {
+                                    for (int l = 0; l < 10; l++)
                                     {
-                                        for (int l = 0; l < 10; l++)
+                                        if (game.FirstUser.BattleField.hitted[k, l] == false
+                                            && game.FirstUser.BattleField.forbiddenToShot[k, l] == true)
                                         {
-                                            if (game.FirstUser.BattleField.hitted[k, l] == false
-                                                && game.FirstUser.BattleField.forbiddenToShot[k, l] == true)
-                                            {
-                                                Miscleanous.FillLines(enemyField, k, l);
-                                            }
+                                            Miscleanous.FillLines(enemyField, k, l);
                                         }
-
                                     }
-
                                 }
                             }
                         }
-                        using (var graphics = Graphics.FromImage(myField))
+                    }
+                    using (var graphics = Graphics.FromImage(myField))
+                    {
+                        if (game.SecondUser.BattleField.hitted[i, j])
                         {
-                            if (game.FirstUser.BattleField.shipDestroyed[i, j])
+                            graphics.DrawImage(exp, i * 50 + 5, j * 50 + 5, 40, 40);
+                        }
+                        else
+                        {
+                            if (game.SecondUser.BattleField.shooted[i, j])
                             {
-                                graphics.DrawImage(exp, i * 50 + 5, j * 50 + 5, 40, 40);
+                                graphics.DrawImage(mis, i * 50 + 5, j * 50 + 5, 40, 40);
                             }
-                            if (game.SecondUser.BattleField.hitted[i, j])
-                            {
-                                graphics.DrawImage(exp, i * 50 + 5, j * 50 + 5, 40, 40);
-                            }
-                            else
-                            {
-                                if (game.SecondUser.BattleField.shooted[i, j])
-                                {
-                                    graphics.DrawImage(mis, i * 50 + 5, j * 50 + 5, 40, 40);
-                                }
-
-                            }
-
                         }
                     }
                 }
             }
         }
-        private void pictureBox2_Click(object sender, EventArgs e)
+
+        private void LocalGame()
         {
             if (youCanShoot && game.FirstUser.BattleField.shooted[lastX, lastY] == false
                 && game.FirstUser.BattleField.forbiddenToShot[lastX, lastY] == false)
@@ -161,7 +201,7 @@ namespace Warships
 
 
 
-                if (battleType == 0 && botCanShoot)
+                if (botCanShoot)
                 {
                     bool enemyMissed = false;
                     do
@@ -190,7 +230,6 @@ namespace Warships
 
                         }
                         pictureBox1.Image = myField;
-                        //System.Threading.Thread.Sleep(800);
                         pictureBox1.Update();
 
                     } while (!enemyMissed);
@@ -198,49 +237,6 @@ namespace Warships
                     youCanShoot = true;
                     label3.Text = "Ваш выстрел!";
                 }
-            }
-
-        }
-        private void pictureBox2_MouseMove(object sender, MouseEventArgs e)
-        {
-            int X = e.Location.X;
-            int Y = e.Location.Y;
-            X = X / 50;
-            Y = Y / 50;
-            if (X % 50 >= 25) X++;
-            if (Y % 50 >= 25) Y++;
-
-            if (X != lastX || Y != lastY)
-            {
-                Bitmap enemyFieldEnimated = new Bitmap(enemyField);
-                using (var graphics = Graphics.FromImage(enemyFieldEnimated))
-                {
-                    if (game.FirstUser.BattleField.shooted[X, Y])
-                    {
-                        graphics.DrawImage(redKrest, X * 50 + 5, Y * 50 + 5, 40, 40);
-                    }
-                    else
-                    {
-                        graphics.DrawImage(aim, X * 50 + 5, Y * 50 + 5, 40, 40);
-                    }
-                }
-                pictureBox2.Image = enemyFieldEnimated;
-                lastX = X;
-                lastY = Y;
-            }
-        }
-
-        private void buttonSaveGame_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "game files (*.game)|*.game";
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                game.SecondUser.BattleField = bot.BattleField;
-                IFormatter formatter = new BinaryFormatter();
-                Stream stream = new FileStream(sfd.FileName, FileMode.Create, FileAccess.Write, FileShare.None);
-                formatter.Serialize(stream, game);
-                stream.Close();
             }
         }
     }

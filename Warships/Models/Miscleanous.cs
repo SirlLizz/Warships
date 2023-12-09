@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Security.Policy;
-
-namespace Warships.Models
+﻿namespace Warships.Models
 {
     internal static class Miscleanous
     {
