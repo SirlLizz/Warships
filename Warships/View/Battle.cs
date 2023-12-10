@@ -324,6 +324,7 @@ namespace Warships
                     MessageBox.Show("Поражение");
                     socket.Close();
                     this.Close();
+                    break;
                 }
                 using (var graphics = Graphics.FromImage(myField))
                 {
