@@ -3,8 +3,6 @@ using System.Runtime.Serialization;
 using Warships.Models;
 using static Warships.Models.Miscleanous;
 using System.Net.Sockets;
-using System;
-using Warships.View;
 
 namespace Warships
 {
@@ -12,8 +10,8 @@ namespace Warships
     {
         bool youCanShoot = false;
         bool botCanShoot = false;
-        Bot bot;
-        Game game;
+        readonly Bot bot = new(Enum.BattleType.vsEasyBot);
+        Game game = new();
         Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         int lastX = 1;
@@ -69,7 +67,6 @@ namespace Warships
                     buttonSaveGame.Visible = false;
 
                     CheckHitLocalGame();
-                    game.SecondUser.BattleField = GetSocetData<BattleField>();
 
                     break;
                 case Enum.BattleType.server:
@@ -109,7 +106,7 @@ namespace Warships
                 Bitmap enemyFieldEnimated = new Bitmap(enemyField);
                 using (var graphics = Graphics.FromImage(enemyFieldEnimated))
                 {
-                    if (game.FirstUser.BattleField.shooted[X, Y])
+                    if (game.FirstUser.BattleField.shooted[X, Y] || game.FirstUser.BattleField.forbiddenToShot[X, Y])
                     {
                         graphics.DrawImage(redKrest, X * 50 + 5, Y * 50 + 5, 40, 40);
                     }
@@ -266,50 +263,53 @@ namespace Warships
 
         private void LocalGame()
         {
-            Point point = new Point(lastX, lastY);
-            game.FirstUser.BattleField.shooted[lastX, lastY] = true;
-            SendSocetData<Point>(point);
-            game.SecondUser.BattleField = GetSocetData<BattleField>();
-
-            using (var graphics = Graphics.FromImage(enemyField))
+            if (game.FirstUser.BattleField.shooted[lastX, lastY] == false
+                && game.FirstUser.BattleField.forbiddenToShot[lastX, lastY] == false)
             {
-                if (game.SecondUser.BattleField.shipDestroyed[point.X, point.Y]) //если попали
-                {
-                    graphics.DrawImage(exp, lastX * 50 + 5, lastY * 50 + 5, 40, 40);
-                    game.FirstUser.BattleField.hitted[lastX, lastY] = true;
-                    if (IsDestroyedWhole(game.SecondUser.BattleField, lastX, lastY))  //если полностью уничтожили корабль противника
-                    {
-                        Miscleanous.ForbidShotBoat(game.FirstUser.BattleField, lastX, lastY);
+                Point point = new Point(lastX, lastY);
+                game.FirstUser.BattleField.shooted[lastX, lastY] = true;
+                SendSocetData<Point>(point);
+                game.SecondUser.BattleField = GetSocetData<BattleField>();
 
-                        for (int i = 0; i < 10; i++)
+                using (var graphics = Graphics.FromImage(enemyField))
+                {
+                    if (game.SecondUser.BattleField.shipDestroyed[point.X, point.Y]) //если попали
+                    {
+                        graphics.DrawImage(exp, lastX * 50 + 5, lastY * 50 + 5, 40, 40);
+                        game.FirstUser.BattleField.hitted[lastX, lastY] = true;
+                        if (IsDestroyedWhole(game.SecondUser.BattleField, lastX, lastY))  //если полностью уничтожили корабль противника
                         {
-                            for (int j = 0; j < 10; j++)
+                            Miscleanous.ForbidShotBoat(game.FirstUser.BattleField, lastX, lastY);
+
+                            for (int i = 0; i < 10; i++)
                             {
-                                if (game.FirstUser.BattleField.hitted[i, j] == false
-                                    && game.FirstUser.BattleField.forbiddenToShot[i, j] == true)
+                                for (int j = 0; j < 10; j++)
                                 {
-                                    Miscleanous.FillLines(enemyField, i, j);
+                                    if (game.FirstUser.BattleField.hitted[i, j] == false
+                                        && game.FirstUser.BattleField.forbiddenToShot[i, j] == true)
+                                    {
+                                        Miscleanous.FillLines(enemyField, i, j);
+                                    }
                                 }
+
                             }
 
                         }
-
+                        if (AllIsDestroyed(game.SecondUser.BattleField))
+                        {
+                            MessageBox.Show("Победа!!!");
+                            SendSocetData<Point>(new Point(-1, -1));
+                            socket.Close();
+                            this.Close();
+                        }
                     }
-                    if (AllIsDestroyed(game.SecondUser.BattleField)) 
+                    else
                     {
-                        MessageBox.Show("Победа!!!");
-                        SendSocetData<Point>(new Point(-1, -1));
-                        socket.Close();
-                        this.Close(); 
+                        graphics.DrawImage(mis, lastX * 50 + 5, lastY * 50 + 5, 40, 40);
+                        label3.Text = "Выстрел противника!";
+                        CheckHitLocalGame();
+                        label3.Text = "Ваш выстрел!";
                     }
-                }
-                else
-                {
-                    graphics.DrawImage(mis, lastX * 50 + 5, lastY * 50 + 5, 40, 40);
-                    label3.Text = "Выстрел противника!";
-                    SendSocetData(game.FirstUser.BattleField);
-                    CheckHitLocalGame();
-                    label3.Text = "Ваш выстрел!";
                 }
             }
         }
@@ -338,6 +338,8 @@ namespace Warships
                         oppHit = false;
                         graphics.DrawImage(mis, point.X * 50 + 5, point.Y * 50 + 5, 40, 40);
                     }
+                    pictureBox1.Image = myField;
+                    pictureBox1.Update();
                 }
 
                 SendSocetData(game.FirstUser.BattleField);
