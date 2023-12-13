@@ -180,20 +180,27 @@ namespace Warships
 
         private void buttonLoadPattern_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "plc files (*.plc)|*.plc";
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                resetLayout();
-                IFormatter formatter = new BinaryFormatter();
-                Stream stream = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.None);
-                bf = (BattleField)formatter.Deserialize(stream);
-                stream.Close();
+            try 
+            { 
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "plc files (*.plc)|*.plc";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    resetLayout();
+                    IFormatter formatter = new BinaryFormatter();
+                    Stream stream = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.None);
+                    bf = (BattleField)formatter.Deserialize(stream);
+                    stream.Close();
+                    shipCount = new int[4] { 0, 0, 0, 0 };
+                    updateLayout();
+                    updateBoat(bf, RawOcean);
+                }
             }
-            shipCount = new int[4] { 0, 0, 0, 0 };
+            catch
+            {
+                MessageBox.Show("При открытии файла произошла ошибка, проверьте файл", "Ошибка");
+            }
 
-            updateLayout();
-            updateBoat(bf, RawOcean);
         }
 
         private void buttonSavePattern_Click(object sender, EventArgs e)
