@@ -114,6 +114,7 @@
             Controls.Add(buttonNext);
             Controls.Add(buttonToStartPage);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "SelectBotLevelPage";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Игра против ИИ";

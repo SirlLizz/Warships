@@ -145,7 +145,7 @@ namespace Warships
         {
             if (shipCount[0] == 0 && shipCount[1] == 0 && shipCount[2] == 0 && shipCount[3] == 0)
             {
-                if(g.BattleType != Enum.BattleType.client && g.BattleType != Enum.BattleType.server)
+                if (g.BattleType != Enum.BattleType.client && g.BattleType != Enum.BattleType.server)
                 {
                     this.Close();
                     f1f2 = new Thread(openBattle);

@@ -319,7 +319,7 @@ namespace Warships
             do
             {
                 Point point = GetSocetData<Point>();
-                if(point.X == -1 && point.Y == -1)
+                if (point.X == -1 && point.Y == -1)
                 {
                     MessageBox.Show("Поражение");
                     socket.Close();

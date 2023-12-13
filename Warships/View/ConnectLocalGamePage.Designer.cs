@@ -80,6 +80,7 @@
             Controls.Add(buttonConnect);
             Controls.Add(buttonToStartPage);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "ConnectLocalGamePage";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Подключение к игре";

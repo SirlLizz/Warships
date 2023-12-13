@@ -232,6 +232,7 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             KeyPreview = true;
             Margin = new Padding(3, 2, 3, 2);
+            MaximizeBox = false;
             Name = "ShipPlacing";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Расстановка кораблей";

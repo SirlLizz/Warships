@@ -72,6 +72,7 @@
             Controls.Add(buttonConnect);
             Controls.Add(buttonCreateGame);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "LocalGameSelect";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Игра по сети";

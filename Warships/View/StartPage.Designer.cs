@@ -170,6 +170,7 @@
             Controls.Add(buttonStartBotGame);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(3, 2, 3, 2);
+            MaximizeBox = false;
             Name = "StartPage";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Главное меню";

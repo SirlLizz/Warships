@@ -85,6 +85,7 @@
             Controls.Add(buttonToStartPage);
             Controls.Add(labelIPaddress);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "CreateLocalGamePage";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Создание игры";
