@@ -138,6 +138,8 @@
 
         private void pictureAvatar_Click(object sender, EventArgs e)
         {
+            //Добавление своего аватара, работает, просто не нужно
+            /*
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "png files (*.png)|*.png|jpg files (*.jpg)|*.jpg";
@@ -159,6 +161,7 @@
                     pictureAvatar.Image = collectionImage.First();
                 }
             }
+            */
         }
 
         Game? game;
