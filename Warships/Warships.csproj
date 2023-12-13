@@ -126,6 +126,9 @@
     <None Update="Resources\rotate.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\SystemInfo\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\water-4.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

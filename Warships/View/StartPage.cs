@@ -6,6 +6,7 @@
     using System.Windows.Forms;
     using Warships.Models;
     using Warships.View;
+    using System.Diagnostics;
 
     public partial class StartPage : Form
     {
@@ -115,7 +116,12 @@
 
         private void buttonSystemInfo_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Версия приложения: 0.0.0.1", "Сведения о системе");
+            var psi = new ProcessStartInfo(@"Resources\SystemInfo\index.html")
+            {
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
         }
 
         private void buttonPreviousAvatar_Click(object sender, EventArgs e)
