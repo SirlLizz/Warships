@@ -171,19 +171,23 @@
             ofd.Filter = "game files (*.game)|*.game";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                IFormatter formatter = new BinaryFormatter();
-                Stream stream = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.None);
-                game = (Game)formatter.Deserialize(stream);
-                stream.Close();
-            }
-            if (game != null)
-            {
-                Thread f1f2 = new(openBattle);
-                f1f2.SetApartmentState(ApartmentState.STA);
-                f1f2.Start();
-                Close();
-            }
+                try
+                {
+                    IFormatter formatter = new BinaryFormatter();
+                    Stream stream = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.None);
+                    game = (Game)formatter.Deserialize(stream);
+                    stream.Close();
+                    Thread f1f2 = new(openBattle);
+                    f1f2.SetApartmentState(ApartmentState.STA);
+                    f1f2.Start();
+                    Close();
+                }
+                catch
+                {
+                    MessageBox.Show("При открытии файла произошла ошибка, проверьте файл", "Ошибка");
+                }
 
+            }
         }
 
         public void openBattle(object? obj)
